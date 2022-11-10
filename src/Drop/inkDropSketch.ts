@@ -1,5 +1,6 @@
-
 import p5 from 'p5'
+import { GUI } from 'dat.gui'
+
 import { Settings } from './common'
 import { isInRect } from './helper'
 import { InkDrop } from './inkDrop'
@@ -15,21 +16,17 @@ export const inkDropSketch = (p: p5) => {
 
 
     p.setup = () => {
-        p.createCanvas(p.windowWidth, 400)
-        const toggleDebugCheckbox = p.createCheckbox('toggle debug', false)
-        toggleDebugCheckbox.mouseClicked(onToggleDebug)
+        p.createCanvas(p.windowWidth - 260, 400)
 
-        const resetButton = p.createButton('reset')
-        resetButton.mouseClicked(onReset)
+
+        const resetObject = { reset: function onReset() { drops.splice(0, drops.length); } }
+        const gui = new GUI()
+        const settingsFolder = gui.addFolder('Settings')
+        settingsFolder.add(settings, 'debug')
+        settingsFolder.add(resetObject, 'reset')
+        settingsFolder.open()
     }
 
-    function onToggleDebug() {
-        settings.debug = !settings.debug
-    }
-
-    function onReset() {
-        drops.splice(0, drops.length);
-    }
     p.mousePressed = () => {
         currentDropRadius = minRadius
     }

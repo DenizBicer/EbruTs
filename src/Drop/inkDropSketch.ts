@@ -5,13 +5,18 @@ import { Settings } from './common'
 import { isInRect } from './helper'
 import { InkDrop } from './inkDrop'
 
+type DropSettings = { minRadius: number, maxRadius: number }
+
 export const inkDropSketch = (p: p5) => {
 
     const settings: Settings = { debug: false }
     const drops: InkDrop[] = []
 
-    const minRadius = 20
-    const maxRadius = 100
+    const dropSettings: DropSettings = {
+        minRadius: 20,
+        maxRadius: 100,
+    }
+
     let currentDropRadius = 0
 
 
@@ -21,18 +26,21 @@ export const inkDropSketch = (p: p5) => {
 
         const resetObject = { reset: function onReset() { drops.splice(0, drops.length); } }
         const gui = new GUI()
-        const settingsFolder = gui.addFolder('Settings')
-        settingsFolder.add(settings, 'debug')
-        settingsFolder.add(resetObject, 'reset')
-        settingsFolder.open()
+        const generalFolder = gui.addFolder('General')
+        generalFolder.add(settings, 'debug')
+        generalFolder.add(resetObject, 'reset')
+        generalFolder.open()
+        const sketchFolder = gui.addFolder('Drop')
+        sketchFolder.add(dropSettings, 'minRadius')
+        sketchFolder.add(dropSettings, 'maxRadius')
     }
 
     p.mousePressed = () => {
-        currentDropRadius = minRadius
+        currentDropRadius = dropSettings.minRadius
     }
 
     p.mouseReleased = () => {
-        if (currentDropRadius < minRadius) {
+        if (currentDropRadius < dropSettings.minRadius) {
             currentDropRadius = 0
             return
         }
@@ -53,7 +61,7 @@ export const inkDropSketch = (p: p5) => {
     function update() {
         if (p.mouseIsPressed) {
             currentDropRadius += 2.5
-            currentDropRadius = p.min(currentDropRadius, maxRadius)
+            currentDropRadius = p.min(currentDropRadius, dropSettings.maxRadius)
         }
 
 

@@ -1,6 +1,6 @@
 import p5 from "p5"
 import { Settings } from "./common"
-import { angleToDir } from "./helper"
+import { angleToDir, easeInOutSine } from "./helper"
 
 function DropMovement(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
     const distanceToDrop = p5.Vector.dist(point, dropPoint)
@@ -15,6 +15,7 @@ export class InkDrop {
 
     sketchSetings: Settings
 
+
     currentPoints: p5.Vector[] = []
     startPoints: p5.Vector[] = []
     targetPoints: p5.Vector[] = []
@@ -23,7 +24,7 @@ export class InkDrop {
     color: p5.Color
 
     transitionStartTime: number
-    transitionDuration: number = 400
+    transitionDuration: number = 300
 
     constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, sketchSetting: Settings) {
         this.sketchSetings = sketchSetting
@@ -63,7 +64,9 @@ export class InkDrop {
             return;
         }
 
-        var t = elapsedTime / this.transitionDuration;
+        let t = elapsedTime / this.transitionDuration;
+
+        t = easeInOutSine(t)
 
         for (let i = 0; i < this.vertexCount; i++) {
             const position = p5.Vector.lerp(this.startPoints[i], this.targetPoints[i], t)

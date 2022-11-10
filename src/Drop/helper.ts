@@ -10,3 +10,7 @@ export function angleToDir(angRad: number): p5.Vector {
 export function isInRect(point: p5.Vector, x: number, y: number, width: number, height: number): boolean {
     return point.x >= x && point.x < (x + width) && point.y >= y && point.y < ((y + height))
 }
+
+export function easeInOutSine(x: number): number {
+    return -(Math.cos(Math.PI * x) - 1) / 2;
+}

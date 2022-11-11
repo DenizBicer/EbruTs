@@ -54,12 +54,12 @@ export const animatedDropSketch = (p: p5) => {
 
 
     p.setup = () => {
-        console.log('setup')
         p.createCanvas(p.windowWidth, p.windowHeight);
 
         palette = getPalette(p)
         timeStartAnimation = Date.now()
     }
+
     function reset() {
         drops.splice(0, drops.length)
         animatedDrops.map(a => a.isDropped = false)

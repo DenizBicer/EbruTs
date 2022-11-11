@@ -1,6 +1,7 @@
 import p5 from "p5"
 import { Settings } from "../Shared/common"
 import { angleToDir, easeInOutSine } from "../Shared/helper"
+import { inkPoint } from "./inkPoint"
 
 function DropMovement(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
     const distanceToDrop = p5.Vector.dist(point, dropPoint)
@@ -14,16 +15,10 @@ function DropMovement(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
 export class InkDrop {
 
     sketchSetings: Settings
-
-
-    currentPoints: p5.Vector[] = []
-    startPoints: p5.Vector[] = []
-    targetPoints: p5.Vector[] = []
-
+    inkPoints: inkPoint[] = []
     vertexCount: number = 60
     color: p5.Color
 
-    transitionStartTime: number
     transitionDuration: number = 300
 
     constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, sketchSetting: Settings) {
@@ -37,52 +32,28 @@ export class InkDrop {
 
             const position = p5.Vector.add(center, p5.Vector.mult(vector, radius))
 
-            this.startPoints.push(position)
-            this.currentPoints.push(position)
-            this.targetPoints.push(position)
+            this.inkPoints.push(new inkPoint(position))
         }
-
-        this.transitionStartTime = Date.now()
     }
 
     spreadPoints(dropPoint: p5.Vector, radius: number): void {
-        for (let i = 0; i < this.vertexCount; i++) {
-
-            const p = this.currentPoints[i]
-            var oldTarget = this.targetPoints[i]
-
-            this.startPoints[i] = p;
-            this.targetPoints[i] = DropMovement(oldTarget, dropPoint, radius);
-        }
-
-        this.transitionStartTime = Date.now()
+        this.inkPoints.forEach(p => p.spread(dropPoint, radius))
     }
 
     update(): void {
-        const elapsedTime = Date.now() - this.transitionStartTime;
-        if (elapsedTime > this.transitionDuration) {
-            return;
-        }
-
-        let t = elapsedTime / this.transitionDuration;
-
-        t = easeInOutSine(t)
-
-        for (let i = 0; i < this.vertexCount; i++) {
-            const position = p5.Vector.lerp(this.startPoints[i], this.targetPoints[i], t)
-            this.currentPoints[i] = position
-        }
+        this.inkPoints.forEach(p => p.update())
     }
 
     draw(p: p5): void {
+
         p.push()
         p.beginShape()
         p.fill(this.color)
         p.noStroke()
-        for (let i = 0; i < this.vertexCount; i++) {
-            const point = this.currentPoints[i]
-            p.vertex(point.x, point.y)
-        }
+
+        this.inkPoints.forEach(ip => {
+            p.vertex(ip.currentPoint.x, ip.currentPoint.y)
+        })
 
         p.endShape(p.CLOSE)
         p.pop()
@@ -95,9 +66,11 @@ export class InkDrop {
         for (let i = 0; i < this.vertexCount; i++) {
             if (i % 3 !== 0)
                 continue
-            const start = this.startPoints[i]
-            const point = this.currentPoints[i]
-            const target = this.targetPoints[i]
+
+            const inkPoint = this.inkPoints[i]
+            const start = inkPoint.startPoint
+            const point = inkPoint.currentPoint
+            const target = inkPoint.targetPoint
 
             p.fill(37, 28, 255)
             p.noStroke()

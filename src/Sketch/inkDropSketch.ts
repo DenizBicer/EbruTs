@@ -1,8 +1,9 @@
 import p5 from 'p5'
 import { GUI } from 'dat.gui'
+import * as tome from 'chromotome';
 
 import { Settings } from '../Drop/common'
-import { isInRect } from '../Drop/helper'
+import { getRandomElement, isInRect } from '../Drop/helper'
 import { InkDrop } from '../Drop/inkDrop'
 
 type DropSettings = { minRadius: number, maxRadius: number }
@@ -17,12 +18,15 @@ export const inkDropSketch = (p: p5) => {
         maxRadius: 100,
     }
 
-    let currentDropRadius = 0
+    let palette: Palette
 
+    let currentDropRadius = 0
+    let currentColor: string = '#ffffff'
 
     p.setup = () => {
         p.createCanvas(p.windowWidth - 260, 400)
 
+        palette = tome.get();
 
         const resetObject = { reset: function onReset() { drops.splice(0, drops.length); } }
         const gui = new GUI()
@@ -37,6 +41,7 @@ export const inkDropSketch = (p: p5) => {
 
     p.mousePressed = () => {
         currentDropRadius = dropSettings.minRadius
+        currentColor = getRandomElement<string>(palette.colors)
     }
 
     p.mouseReleased = () => {
@@ -52,7 +57,7 @@ export const inkDropSketch = (p: p5) => {
             return
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
-        drops.push(new InkDrop(dropPoint, radius, p.color(255, 255, 255), p.TAU, settings))
+        drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU, settings))
 
         currentDropRadius = 0
     }
@@ -72,12 +77,13 @@ export const inkDropSketch = (p: p5) => {
     p.draw = () => {
         update()
 
-        p.background(227, 238, 240);
+        p.background(p.color(palette.background))
+
         drops.forEach(drop => {
             drop.draw(p)
         });
 
-        p.fill(255, 255, 255, 200)
+        p.fill(p.color(currentColor))
         p.noStroke()
         p.circle(p.mouseX, p.mouseY, currentDropRadius * 2)
     }

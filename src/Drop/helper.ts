@@ -14,3 +14,14 @@ export function isInRect(point: p5.Vector, x: number, y: number, width: number, 
 export function easeInOutSine(x: number): number {
     return -(Math.cos(Math.PI * x) - 1) / 2;
 }
+
+export function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
+export function getRandomElement<T>(list: T[]): T {
+    const i = getRandomInt(0, list.length)
+    return list[i]
+}

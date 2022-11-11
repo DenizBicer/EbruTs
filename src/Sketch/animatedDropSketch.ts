@@ -54,7 +54,7 @@ export const animatedDropSketch = (p: p5) => {
 
 
     p.setup = () => {
-        p.createCanvas(p.windowWidth - 260, 400)
+        p.createCanvas(p.windowWidth, 400)
         palette = getPalette(p)
         timeStartAnimation = Date.now()
     }

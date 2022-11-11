@@ -1,5 +1,4 @@
 node_modules/
 .vscode/
-**/*.js
+
 package-lock.json
-public/bundle.js.map

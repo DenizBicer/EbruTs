@@ -26,25 +26,25 @@ export const animatedDropSketch = (p: p5) => {
     const animatedDrops: AnimatedDrop[] = [
         {
             center: { x: 0.5, y: 0.4 },
-            radius: 50,
+            radius: 25,
             time: 500,
             isDropped: false
         },
         {
             center: { x: 0.6, y: 0.45 },
-            radius: 75,
+            radius: 40,
             time: 1000,
             isDropped: false
         },
         {
             center: { x: 0.4, y: 0.35 },
-            radius: 100,
+            radius: 50,
             time: 1500,
             isDropped: false
         },
         {
             center: { x: 0.4, y: 0.5 },
-            radius: 80,
+            radius: 40,
             time: 2000,
             isDropped: false
         },
@@ -54,7 +54,9 @@ export const animatedDropSketch = (p: p5) => {
 
 
     p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight)
+        console.log('setup')
+        p.createCanvas(p.windowWidth, p.windowHeight);
+
         palette = getPalette(p)
         timeStartAnimation = Date.now()
     }

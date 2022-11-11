@@ -1,0 +1,13 @@
+:root {
+    font: 20px/1.2 -apple-system, helvetica, sans-serif;
+}
+
+body,
+body * {
+    margin: unset;
+    box-sizing: unset;
+    padding: unset;
+    font-size: unset;
+    color: unset;
+    text-decoration: unset;
+}

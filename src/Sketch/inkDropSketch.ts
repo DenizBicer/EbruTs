@@ -1,9 +1,9 @@
 import p5 from 'p5'
 import { GUI } from 'dat.gui'
 
-import { Settings } from './common'
-import { isInRect } from './helper'
-import { InkDrop } from './inkDrop'
+import { Settings } from '../Drop/common'
+import { isInRect } from '../Drop/helper'
+import { InkDrop } from '../Drop/inkDrop'
 
 type DropSettings = { minRadius: number, maxRadius: number }
 

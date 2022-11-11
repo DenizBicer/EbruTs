@@ -7,8 +7,8 @@ export function angleToDir(angRad: number): p5.Vector {
     return vector
 }
 
-export function isInRect(point: p5.Vector, x: number, y: number, width: number, height: number): boolean {
-    return point.x >= x && point.x < (x + width) && point.y >= y && point.y < ((y + height))
+export function isInRect(px: number, py: number, x: number, y: number, width: number, height: number): boolean {
+    return px >= x && px < (x + width) && py >= y && py < ((y + height))
 }
 
 export function easeInOutSine(x: number): number {
@@ -24,4 +24,13 @@ export function getRandomInt(min: number, max: number) {
 export function getRandomElement<T>(list: T[]): T {
     const i = getRandomInt(0, list.length)
     return list[i]
+}
+
+export function createButton(p: p5, content: string): HTMLButtonElement {
+    const button = p.createElement('button', content).elt as HTMLButtonElement
+    const element = document.createElement('span')
+
+    button.appendChild(element)
+
+    return button
 }

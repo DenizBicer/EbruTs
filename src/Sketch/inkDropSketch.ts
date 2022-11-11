@@ -2,7 +2,7 @@ import p5 from 'p5'
 import { GUI } from 'dat.gui'
 
 import { Settings } from '../Shared/common'
-import { getRandomElement, isInRect } from '../Shared/helper'
+import { createButton, getRandomElement, isInRect } from '../Shared/helper'
 import { InkDrop } from '../Drop/inkDrop'
 import { getPalette, Palette } from '../Shared/palette'
 
@@ -12,6 +12,7 @@ export const inkDropSketch = (p: p5) => {
 
     const settings: Settings = { debug: false }
     const drops: InkDrop[] = []
+
 
     const dropSettings: DropSettings = {
         minRadius: 20,
@@ -28,7 +29,8 @@ export const inkDropSketch = (p: p5) => {
 
         palette = getPalette(p)
 
-        const resetObject = { reset: function onReset() { drops.splice(0, drops.length); } }
+        const resetButton = createButton(p, 'reset')
+        resetButton.addEventListener('click', onReset)
         // const gui = new GUI()
         // const generalFolder = gui.addFolder('General')
         // generalFolder.add(settings, 'debug')
@@ -38,6 +40,7 @@ export const inkDropSketch = (p: p5) => {
         // sketchFolder.add(dropSettings, 'minRadius')
         // sketchFolder.add(dropSettings, 'maxRadius')
     }
+    function onReset() { drops.splice(0, drops.length); }
 
     p.mousePressed = () => {
         currentDropRadius = dropSettings.minRadius
@@ -51,14 +54,14 @@ export const inkDropSketch = (p: p5) => {
             return
         }
 
-        const dropPoint = p.createVector(p.mouseX, p.mouseY)
-        const radius = currentDropRadius
-
-        if (!isInRect(dropPoint, 0, 0, p.width, p.height))
+        if (!isInRect(p.mouseX, p.mouseY, 0, 0, p.width, p.height))
             return
 
         if (!currentColor)
             return
+
+        const dropPoint = p.createVector(p.mouseX, p.mouseY)
+        const radius = currentDropRadius
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
         drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU, settings))
@@ -88,6 +91,9 @@ export const inkDropSketch = (p: p5) => {
         });
 
         if (!currentColor)
+            return
+
+        if (!isInRect(p.mouseX, p.mouseY, 0, 0, p.width, p.height))
             return
 
         p.fill(currentColor)

@@ -69,10 +69,11 @@ export const animatedDropSketch = (p: p5) => {
         const elapsedTime = Date.now() - timeStartAnimation
 
         if (elapsedTime > animationDuration) {
-            if (loopAnimation)
+            if (loopAnimation) {
                 timeStartAnimation = Date.now()
+                reset()
+            }
 
-            reset()
             return
         }
 
@@ -87,7 +88,7 @@ export const animatedDropSketch = (p: p5) => {
 
 
             drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
-            drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU, settings))
+            drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU))
             animatedDrop.isDropped = true
         }
 

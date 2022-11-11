@@ -18,10 +18,10 @@ export class inkPoint {
     transitionStartTime: number = 0
     transitionDuration: number = 300
 
-    constructor(position: p5.Vector) {
-        this.startPoint = position
-        this.currentPoint = position
-        this.targetPoint = position
+    constructor(start: p5.Vector, target: p5.Vector, initAnimate: boolean) {
+        this.startPoint = initAnimate ? start : target
+        this.currentPoint = initAnimate ? start : target
+        this.targetPoint = target
 
         this.transitionStartTime = Date.now()
     }

@@ -64,7 +64,7 @@ export const inkDropSketch = (p: p5) => {
         const radius = currentDropRadius
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
-        drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU, settings))
+        drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU))
 
         currentDropRadius = 0
     }

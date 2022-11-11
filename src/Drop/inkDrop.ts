@@ -1,28 +1,19 @@
 import p5 from "p5"
-import { Settings } from "../Shared/common"
-import { angleToDir, easeInOutSine } from "../Shared/helper"
+import { angleToDir } from "../Shared/helper"
 import { inkPoint } from "./inkPoint"
 
-function DropMovement(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
-    const distanceToDrop = p5.Vector.dist(point, dropPoint)
-    const forceAmount = Math.sqrt(1 + (radius * radius) / (distanceToDrop * distanceToDrop)) // not sure about the variable name
-    const direction = p5.Vector.sub(point, dropPoint)
-    const totalDisplacementFromDropPoint = p5.Vector.mult(direction, forceAmount) // not sure about the variable name
-    const nextP = p5.Vector.add(dropPoint, totalDisplacementFromDropPoint)
-    return nextP
-}
 
 export class InkDrop {
 
-    sketchSetings: Settings
     inkPoints: inkPoint[] = []
     vertexCount: number = 60
     color: p5.Color
+    fill: boolean = true
+    debug: boolean = false
 
     transitionDuration: number = 300
 
-    constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, sketchSetting: Settings) {
-        this.sketchSetings = sketchSetting
+    constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, initAnimate: boolean = false) {
         this.color = color
 
         for (let i = 0; i < this.vertexCount; i++) {
@@ -32,7 +23,7 @@ export class InkDrop {
 
             const position = p5.Vector.add(center, p5.Vector.mult(vector, radius))
 
-            this.inkPoints.push(new inkPoint(position))
+            this.inkPoints.push(new inkPoint(center, position, initAnimate))
         }
     }
 
@@ -48,7 +39,14 @@ export class InkDrop {
 
         p.push()
         p.beginShape()
-        p.fill(this.color)
+
+        if (this.fill) {
+            p.fill(this.color)
+        }
+        else {
+            p.noFill()
+        }
+
         p.noStroke()
 
         this.inkPoints.forEach(ip => {
@@ -58,7 +56,7 @@ export class InkDrop {
         p.endShape(p.CLOSE)
         p.pop()
 
-        if (!this.sketchSetings.debug)
+        if (!this.debug)
             return
 
         p.push()

@@ -1,5 +1,6 @@
 import p5 from "p5"
 import { animatedDropSketch } from "./Sketch/animatedDropSketch"
+import { explanatoryDropSketch } from "./Sketch/explanatoryDropSketch"
 import { inkDropSketch } from "./Sketch/inkDropSketch"
 
 
@@ -17,6 +18,11 @@ const sketches: SketchMap[] = [
     },
     {
         id: 'sketch-02',
+        sketch: explanatoryDropSketch
+    }
+    ,
+    {
+        id: 'sketch-03',
         sketch: inkDropSketch
     }
 ]

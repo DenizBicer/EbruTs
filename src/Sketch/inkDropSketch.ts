@@ -29,14 +29,14 @@ export const inkDropSketch = (p: p5) => {
         palette = getPalette(p)
 
         const resetObject = { reset: function onReset() { drops.splice(0, drops.length); } }
-        const gui = new GUI()
-        const generalFolder = gui.addFolder('General')
-        generalFolder.add(settings, 'debug')
-        generalFolder.add(resetObject, 'reset')
-        generalFolder.open()
-        const sketchFolder = gui.addFolder('Drop')
-        sketchFolder.add(dropSettings, 'minRadius')
-        sketchFolder.add(dropSettings, 'maxRadius')
+        // const gui = new GUI()
+        // const generalFolder = gui.addFolder('General')
+        // generalFolder.add(settings, 'debug')
+        // generalFolder.add(resetObject, 'reset')
+        // generalFolder.open()
+        // const sketchFolder = gui.addFolder('Drop')
+        // sketchFolder.add(dropSettings, 'minRadius')
+        // sketchFolder.add(dropSettings, 'maxRadius')
     }
 
     p.mousePressed = () => {

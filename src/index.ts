@@ -2,9 +2,26 @@ import p5 from "p5"
 import { animatedDropSketch } from "./Sketch/animatedDropSketch"
 import { inkDropSketch } from "./Sketch/inkDropSketch"
 
-const div = document.getElementById('p5sketch')
-const sketch = animatedDropSketch
-const p5sketch = div && new p5(sketch, div)
+
+type SketchMap = {
+    id: string,
+    sketch: (p: p5) => void
+    p5Instance?: p5 | null
+    htmlElement?: HTMLElement | null
+}
+
+const sketches: SketchMap[] = [
+    {
+        id: 'sketch-01',
+        sketch: animatedDropSketch,
+    },
+    {
+        id: 'sketch-02',
+        sketch: inkDropSketch
+    }
+]
+
+
 
 if (document.readyState === 'complete') {
     onPageLoaded()
@@ -12,22 +29,32 @@ if (document.readyState === 'complete') {
     window.addEventListener("load", onPageLoaded);
 }
 
-function onPageLoaded() {
+function loadSketch(sketch: SketchMap) {
+    sketch.htmlElement = document.getElementById(sketch.id)
 
-    resizeSketchCanvas()
-}
-
-function resizeSketchCanvas() {
-    if (!p5sketch || !div)
+    if (!sketch.htmlElement)
         return
 
-    p5sketch.resizeCanvas(div.offsetWidth, div.offsetHeight)
-    console.log(div.offsetWidth, div.offsetHeight)
+    sketch.p5Instance = new p5(sketch.sketch, sketch.htmlElement)
+}
+
+function onPageLoaded() {
+
+    sketches.forEach(s => loadSketch(s))
+    sketches.forEach(s => resizeSketchCanvas(s))
+}
+
+function resizeSketchCanvas(sketch: SketchMap) {
+    if (!sketch.p5Instance || !sketch.htmlElement)
+        return
+
+    sketch.p5Instance.resizeCanvas(sketch.htmlElement.offsetWidth, sketch.htmlElement.offsetHeight)
+
 }
 
 window.addEventListener('resize', onPageResize)
 
 
 function onPageResize() {
-    resizeSketchCanvas()
+    sketches.forEach(s => resizeSketchCanvas(s))
 }

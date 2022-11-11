@@ -1,6 +1,6 @@
 import p5 from "p5"
-import { Settings } from "./common"
-import { angleToDir, easeInOutSine } from "./helper"
+import { Settings } from "../Shared/common"
+import { angleToDir, easeInOutSine } from "../Shared/helper"
 
 function DropMovement(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
     const distanceToDrop = p5.Vector.dist(point, dropPoint)
@@ -89,11 +89,11 @@ export class InkDrop {
 
         if (!this.sketchSetings.debug)
             return
+
         p.push()
 
-        // noStroke()
         for (let i = 0; i < this.vertexCount; i++) {
-            if (i % 1 !== 0)
+            if (i % 3 !== 0)
                 continue
             const start = this.startPoints[i]
             const point = this.currentPoints[i]

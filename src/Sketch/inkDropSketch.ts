@@ -1,10 +1,10 @@
 import p5 from 'p5'
 import { GUI } from 'dat.gui'
-import * as tome from 'chromotome';
 
-import { Settings } from '../Drop/common'
-import { getRandomElement, isInRect } from '../Drop/helper'
+import { Settings } from '../Shared/common'
+import { getRandomElement, isInRect } from '../Shared/helper'
 import { InkDrop } from '../Drop/inkDrop'
+import { getPalette, Palette } from '../Shared/palette'
 
 type DropSettings = { minRadius: number, maxRadius: number }
 
@@ -21,12 +21,12 @@ export const inkDropSketch = (p: p5) => {
     let palette: Palette
 
     let currentDropRadius = 0
-    let currentColor: string = '#ffffff'
+    let currentColor: p5.Color | undefined
 
     p.setup = () => {
         p.createCanvas(p.windowWidth - 260, 400)
 
-        palette = tome.get();
+        palette = getPalette(p)
 
         const resetObject = { reset: function onReset() { drops.splice(0, drops.length); } }
         const gui = new GUI()
@@ -41,7 +41,8 @@ export const inkDropSketch = (p: p5) => {
 
     p.mousePressed = () => {
         currentDropRadius = dropSettings.minRadius
-        currentColor = getRandomElement<string>(palette.colors)
+        currentColor = getRandomElement<p5.Color>(palette.colors)
+
     }
 
     p.mouseReleased = () => {
@@ -54,6 +55,9 @@ export const inkDropSketch = (p: p5) => {
         const radius = currentDropRadius
 
         if (!isInRect(dropPoint, 0, 0, p.width, p.height))
+            return
+
+        if (!currentColor)
             return
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
@@ -77,13 +81,16 @@ export const inkDropSketch = (p: p5) => {
     p.draw = () => {
         update()
 
-        p.background(p.color(palette.background))
+        p.background(palette.background)
 
         drops.forEach(drop => {
             drop.draw(p)
         });
 
-        p.fill(p.color(currentColor))
+        if (!currentColor)
+            return
+
+        p.fill(currentColor)
         p.noStroke()
         p.circle(p.mouseX, p.mouseY, currentDropRadius * 2)
     }

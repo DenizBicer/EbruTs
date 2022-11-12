@@ -18,14 +18,21 @@ type AnimationKeyDropEvent = {
 type AnimationFrame = {
     time: number
     isEvaluated: boolean
+    highlightIndex: number
     dropEvent?: AnimationKeyDropEvent
     renderChangeEvent?: AnimationRenderChangeEvent
 }
 
+type HighlightText = {
+    id: string,
+    element?: HTMLElement | null
+}
+
 const animationFramesForFirstDrop: AnimationFrame[] = [
     {
-        time: 2000,
+        time: 4000,
         isEvaluated: false,
+        highlightIndex: 1,
         dropEvent: { center: { x: 0.25, y: 0.5 }, radius: 90, initAnimate: true, alpha: 100 },
         renderChangeEvent: { fill: true, debug: false }
     }
@@ -35,22 +42,26 @@ const animationFramesForSecondDrop: AnimationFrame[] = [
     {
         time: 0,
         isEvaluated: false,
+        highlightIndex: 0,
         dropEvent: { center: { x: 0.55, y: 0.5 }, radius: 90, initAnimate: false, alpha: 255 },
         renderChangeEvent: { fill: false, debug: true }
     },
     {
-        time: 4000,
+        time: 10000,
         isEvaluated: false,
+        highlightIndex: 2,
         renderChangeEvent: { fill: true, debug: true }
     },
     {
-        time: 6000,
+        time: 16000,
         isEvaluated: false,
+        highlightIndex: 2,
         renderChangeEvent: { fill: true, debug: false }
     }
 ]
+
 export const explanatoryDropSketch = (p: p5) => {
-    const animationDuration = 8000
+    const animationDuration = 20000
     const loopAnimation = true
 
     let palette: Palette
@@ -63,6 +74,8 @@ export const explanatoryDropSketch = (p: p5) => {
     let playAnimation: boolean = true
     let pauseElapsedTime: number = 0
 
+    const highlightTexts: HighlightText[] = [{ id: 'explain-00' }, { id: 'explain-01' }, { id: 'explain-02' }]
+
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
         palette = getPalette(p)
@@ -71,6 +84,9 @@ export const explanatoryDropSketch = (p: p5) => {
         p5ElementButton.mouseClicked(onToggleAnimation)
         toggleAnimationButton = p5ElementButton.elt as HTMLButtonElement
 
+        highlightTexts.forEach(t => {
+            t.element = document.getElementById(t.id)
+        })
     }
 
     function onToggleAnimation() {
@@ -96,6 +112,17 @@ export const explanatoryDropSketch = (p: p5) => {
         for (const frame of frames) {
             if (frame.isEvaluated) continue
             if (elapsedTime < frame.time) continue
+
+            highlightTexts.forEach((t, i) => {
+                if (t.element) {
+                    if (i == frame.highlightIndex) {
+                        t.element.classList.add('highlight')
+                    }
+                    else {
+                        t.element.classList.remove('highlight')
+                    }
+                }
+            })
 
             if (frame.dropEvent) {
                 const dropPoint = p.createVector(frame.dropEvent.center.x * p.width, frame.dropEvent.center.y * p.height)

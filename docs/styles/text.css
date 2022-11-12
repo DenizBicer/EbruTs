@@ -22,3 +22,7 @@ h3 {
 p {
     font: 400 1.0rem/1.5 -apple-system, helvetica, sans-serif;
 }
+
+.highlight {
+    background-color: gold;
+}

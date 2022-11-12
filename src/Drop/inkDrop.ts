@@ -16,6 +16,7 @@ export class InkDrop {
     constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, initAnimate: boolean = false) {
         this.color = color
 
+
         for (let i = 0; i < this.vertexCount; i++) {
             const t = i / this.vertexCount
             const ang = t * TAU

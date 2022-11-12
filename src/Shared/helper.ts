@@ -26,11 +26,3 @@ export function getRandomElement<T>(list: T[]): T {
     return list[i]
 }
 
-export function createButton(p: p5, content: string): HTMLButtonElement {
-    const button = p.createElement('button', content).elt as HTMLButtonElement
-    const element = document.createElement('span')
-
-    button.appendChild(element)
-
-    return button
-}

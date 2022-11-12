@@ -2,7 +2,7 @@ import p5 from 'p5'
 import { GUI } from 'dat.gui'
 
 import { Settings } from '../Shared/common'
-import { createButton, getRandomElement, isInRect } from '../Shared/helper'
+import { getRandomElement, isInRect } from '../Shared/helper'
 import { InkDrop } from '../Drop/inkDrop'
 import { getPalette, Palette } from '../Shared/palette'
 
@@ -26,20 +26,10 @@ export const inkDropSketch = (p: p5) => {
 
     p.setup = () => {
         p.createCanvas(p.windowWidth - 260, 400)
-
         palette = getPalette(p)
-
-        const resetButton = createButton(p, 'reset')
-        resetButton.addEventListener('click', onReset)
-        // const gui = new GUI()
-        // const generalFolder = gui.addFolder('General')
-        // generalFolder.add(settings, 'debug')
-        // generalFolder.add(resetObject, 'reset')
-        // generalFolder.open()
-        // const sketchFolder = gui.addFolder('Drop')
-        // sketchFolder.add(dropSettings, 'minRadius')
-        // sketchFolder.add(dropSettings, 'maxRadius')
+        p.createButton('reset').mouseClicked(onReset)
     }
+
     function onReset() { drops.splice(0, drops.length); }
 
     p.mousePressed = () => {

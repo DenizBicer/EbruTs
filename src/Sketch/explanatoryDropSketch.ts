@@ -25,7 +25,7 @@ const animationFramesForFirstDrop: AnimationFrame[] = [
     {
         time: 2000,
         isEvaluated: false,
-        dropEvent: { center: { x: 0.25, y: 0.5 }, radius: 80, initAnimate: true },
+        dropEvent: { center: { x: 0.25, y: 0.5 }, radius: 90, initAnimate: true },
         renderChangeEvent: { fill: true, debug: false }
     }
 ]
@@ -125,9 +125,6 @@ export const explanatoryDropSketch = (p: p5) => {
 
         secondDrop && secondDrop.draw(p)
         firstDrop && firstDrop.draw(p)
-
-        if (firstDrop)
-            console.log('first drop')
     }
 
 

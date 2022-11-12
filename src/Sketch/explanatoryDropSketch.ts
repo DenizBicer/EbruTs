@@ -75,7 +75,7 @@ export const explanatoryDropSketch = (p: p5) => {
 
     function onToggleAnimation() {
         playAnimation = !playAnimation
-        toggleAnimationButton.textContent = playAnimation ? 'pause' : 'play'
+        toggleAnimationButton.textContent = playAnimation ? 'pause' : 'resume'
         if (playAnimation) {
             timeStartAnimation = Date.now() - pauseElapsedTime
         }

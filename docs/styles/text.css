@@ -5,24 +5,45 @@ p:not(:last-child) {
 
 h1 {
     font: 700 2rem -apple-system, helvetica, sans-serif;
+    color: hsl(0, 0%, 33%)
 }
 
 h2 {
     font: 400 1.5rem -apple-system, helvetica, sans-serif;
+    color: hsl(0, 0%, 33%)
 }
 
 time {
     font: 700 1.0rem -apple-system, helvetica, sans-serif;
+    color: hsl(0, 0%, 70%)
 }
 
 h3 {
     font: 700 1.0rem -apple-system, helvetica, sans-serif;
+    color: hsl(0, 0%, 33%)
 }
 
 p {
     font: 400 1.0rem/1.5 -apple-system, helvetica, sans-serif;
+    color: hsl(0, 0%, 33%)
 }
 
 .highlight {
-    background-color: gold;
+    background-color: #a7e0e2;
+}
+
+a {
+    box-shadow: inset 0 -0.25em #f0527f;
+}
+
+@media (max-width: 8.5in) {
+    :root {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 5in) {
+    :root {
+        font-size: 16px;
+    }
 }

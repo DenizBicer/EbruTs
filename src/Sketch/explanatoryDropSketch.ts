@@ -35,6 +35,11 @@ const animationFramesForFirstDrop: AnimationFrame[] = [
         highlightIndex: 1,
         dropEvent: { center: { x: 0.25, y: 0.5 }, radius: 90, initAnimate: true, alpha: 100 },
         renderChangeEvent: { fill: true, debug: false }
+    },
+    {
+        time: 6000,
+        isEvaluated: false,
+        highlightIndex: 2
     }
 ]
 
@@ -49,13 +54,13 @@ const animationFramesForSecondDrop: AnimationFrame[] = [
     {
         time: 10000,
         isEvaluated: false,
-        highlightIndex: 2,
+        highlightIndex: 3,
         renderChangeEvent: { fill: true, debug: true }
     },
     {
         time: 16000,
         isEvaluated: false,
-        highlightIndex: 2,
+        highlightIndex: 3,
         renderChangeEvent: { fill: true, debug: false }
     }
 ]
@@ -74,7 +79,7 @@ export const explanatoryDropSketch = (p: p5) => {
     let playAnimation: boolean = true
     let pauseElapsedTime: number = 0
 
-    const highlightTexts: HighlightText[] = [{ id: 'explain-00' }, { id: 'explain-01' }, { id: 'explain-02' }]
+    const highlightTexts: HighlightText[] = [{ id: 'explain-00' }, { id: 'explain-01' }, { id: 'explain-02' }, { id: 'explain-03' }]
 
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);

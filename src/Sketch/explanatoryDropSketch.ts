@@ -132,7 +132,7 @@ export const explanatoryDropSketch = (p: p5) => {
                 const radius = frame.dropEvent.radius
                 const currentColor = p.color(255, 180)
 
-                drop = new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU, frame.dropEvent.initAnimate)
+                drop = new InkDrop(dropPoint, p.color(currentColor), { radius }, frame.dropEvent.initAnimate)
                 if (otherDrop) {
                     otherDrop.spreadPoints(dropPoint, radius)
                 }

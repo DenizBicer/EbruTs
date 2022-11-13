@@ -88,7 +88,7 @@ export const animatedDropSketch = (p: p5) => {
 
 
             drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
-            drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU))
+            drops.push(new InkDrop(dropPoint, p.color(currentColor), { radius }))
             animatedDrop.isDropped = true
         }
 

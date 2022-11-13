@@ -2,6 +2,13 @@ import p5 from "p5"
 import { angleToDir } from "../Shared/helper"
 import { inkPoint } from "./inkPoint"
 
+type circleDrop = {
+    radius: number
+}
+type customDrop = {
+    radius: number
+    points: p5.Vector[]
+}
 
 export class InkDrop {
 
@@ -15,21 +22,33 @@ export class InkDrop {
 
     transitionDuration: number = 300
 
-    constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, initAnimate: boolean = false) {
+
+    constructor(center: p5.Vector, color: p5.Color, dropProperty: circleDrop | customDrop, initAnimate: boolean = false) {
         this.color = color
         this.center = center
-        this.radius = radius
+
+        const circleDrop = dropProperty as circleDrop
+        const customDrop = dropProperty as customDrop
+
+        this.radius = circleDrop.radius
+
+        if (customDrop.points) {
+            customDrop.points.map(p => this.inkPoints.push(new inkPoint(center, p, initAnimate)))
+            return
+        }
 
         for (let i = 0; i < this.vertexCount; i++) {
             const t = i / this.vertexCount
-            const ang = t * TAU
+            const ang = t * Math.PI * 2
             const vector = angleToDir(ang)
 
-            const position = p5.Vector.add(center, p5.Vector.mult(vector, radius))
+            const position = p5.Vector.add(center, p5.Vector.mult(vector, this.radius))
 
             this.inkPoints.push(new inkPoint(center, position, initAnimate))
         }
+
     }
+
 
     spreadPoints(dropPoint: p5.Vector, radius: number): void {
         this.inkPoints.forEach(p => p.spread(dropPoint, radius))
@@ -65,7 +84,7 @@ export class InkDrop {
 
         p.push()
 
-        for (let i = 0; i < this.vertexCount; i++) {
+        for (let i = 0; i < this.inkPoints.length; i++) {
             if (i % 3 !== 0)
                 continue
 

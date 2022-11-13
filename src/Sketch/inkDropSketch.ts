@@ -1,16 +1,11 @@
 import p5 from 'p5'
-import { GUI } from 'dat.gui'
-
-import { Settings } from '../Shared/common'
 import { getRandomElement, isInRect } from '../Shared/helper'
-import { InkDrop } from '../Drop/inkDrop'
 import { getPalette, Palette } from '../Shared/palette'
+import { InkDrop } from '../Drop/inkDrop'
 
 type DropSettings = { minRadius: number, maxRadius: number }
 
 export const inkDropSketch = (p: p5) => {
-
-    const settings: Settings = { debug: false }
     const drops: InkDrop[] = []
 
 
@@ -54,7 +49,7 @@ export const inkDropSketch = (p: p5) => {
         const radius = currentDropRadius
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
-        drops.push(new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU))
+        drops.push(new InkDrop(dropPoint, p.color(currentColor), { radius }))
 
         currentDropRadius = 0
     }

@@ -2,6 +2,7 @@ import p5 from "p5"
 import { animatedDropSketch } from "./Sketch/animatedDropSketch"
 import { explanatoryDropSketch } from "./Sketch/explanatoryDropSketch"
 import { inkDropSketch } from "./Sketch/inkDropSketch"
+import { typographySketch } from "./Sketch/typographySketch"
 
 
 type SketchMap = {
@@ -24,6 +25,10 @@ const sketches: SketchMap[] = [
     {
         id: 'sketch-03',
         sketch: inkDropSketch
+    },
+    {
+        id: 'sketch-04',
+        sketch: typographySketch
     }
 ]
 
@@ -45,8 +50,12 @@ function loadSketch(sketch: SketchMap) {
 }
 
 function onPageLoaded() {
-
+    document.addEventListener('onSetup', onSketchSetup)
     sketches.forEach(s => loadSketch(s))
+    sketches.forEach(s => resizeSketchCanvas(s))
+}
+
+function onSketchSetup() {
     sketches.forEach(s => resizeSketchCanvas(s))
 }
 
@@ -55,7 +64,6 @@ function resizeSketchCanvas(sketch: SketchMap) {
         return
 
     sketch.p5Instance.resizeCanvas(sketch.htmlElement.offsetWidth, sketch.htmlElement.offsetHeight)
-
 }
 
 window.addEventListener('resize', onPageResize)

@@ -4,3 +4,7 @@ img.size-3,
 img.size-4 {
     width: 100%;
 }
+
+img.equation {
+    display: block;
+}

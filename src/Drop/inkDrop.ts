@@ -5,6 +5,8 @@ import { inkPoint } from "./inkPoint"
 
 export class InkDrop {
 
+    center: p5.Vector
+    radius: number
     inkPoints: inkPoint[] = []
     vertexCount: number = 60
     color: p5.Color
@@ -15,7 +17,8 @@ export class InkDrop {
 
     constructor(center: p5.Vector, radius: number, color: p5.Color, TAU: number, initAnimate: boolean = false) {
         this.color = color
-
+        this.center = center
+        this.radius = radius
 
         for (let i = 0; i < this.vertexCount; i++) {
             const t = i / this.vertexCount

@@ -24,16 +24,17 @@
     <article id="ink-drop">
         <h1><a href="#ink-drop">Making of ink drops</a></h1>
         <h2>Dev log</h2>
-        <time datetime="11-11-2022">Nov. 11, 2022</time>
+        <time datetime="13-11-2022">Nov. 13, 2022</time>
         <div id="sketch-01" class="size-2 sketch">
             <!-- p5 instance will be created here -->
         </div>
 
         <p>
+
             I find it fascinating to observe the process of <a href="https://en.wikipedia.org/wiki/Paper_marbling">paper
                 marbling</a>.
-            The <a href="">Mathematical marbling</a> paper introduces a model that can be used to simulate the
-            behavior of ink in a fast way.
+            The <a href="">Mathematical marbling</a> paper introduces a model that simulates the behavior of ink in a
+            fast way.
             For starters, I focused on the ink drop function defined in it.
         </p>
 
@@ -42,13 +43,11 @@
             <!-- p5 instance will be created here -->
         </div>
         <p>
-            <span id="explain-00">Let's say we have some points on a surface.</span>
-            <span id="explain-01">
-                When an ink drops it will add additional area and push them way.
-            </span>
+            <span id="explain-00">Let's say we have some points on the surface. </span>
+            <span id="explain-01"> When an ink drops it will add additional area and push them away.</span>
             <span id="explain-02">
-                Below equation calculates the next position P', given C: Center position, r:radius, P: current point
-                position and |P-C| distance between point and center.
+                The below equation calculates the next position P', given C: Center position, r: radius, P: current
+                point position, and |P-C| distance between point and center.
             </span>
             <span id="explain-03">
                 If you then connect the points, you can visualize the deformed form.
@@ -56,6 +55,9 @@
             <img class="equation" src="./images/ink-drop-equation.svg" alt="ink drop function">
         </p>
 
+        <p>
+            Try dropping some ink below!
+        </p>
 
         <div id="sketch-03" class="size-2 sketch">
             <!-- p5 instance will be created here -->

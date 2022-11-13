@@ -33,7 +33,7 @@ p {
 }
 
 a {
-    box-shadow: inset 0 -0.25em #f0527f;
+    box-shadow: inset 0 -0.17em #f0527f;
 }
 
 @media (max-width: 8.5in) {

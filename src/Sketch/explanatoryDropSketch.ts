@@ -1,6 +1,5 @@
 import p5 from "p5"
 import { InkDrop } from "../Drop/inkDrop"
-import { getRandomElement } from "../Shared/helper"
 import { getPalette, Palette } from "../Shared/palette"
 
 type AnimationRenderChangeEvent = {
@@ -12,7 +11,6 @@ type AnimationKeyDropEvent = {
     center: { x: number, y: number },
     radius: number,
     initAnimate: boolean
-    alpha: number
 }
 
 type AnimationFrame = {
@@ -33,7 +31,7 @@ const animationFramesForFirstDrop: AnimationFrame[] = [
         time: 4000,
         isEvaluated: false,
         highlightIndex: 1,
-        dropEvent: { center: { x: 0.25, y: 0.5 }, radius: 90, initAnimate: true, alpha: 100 },
+        dropEvent: { center: { x: 0.25, y: 0.5 }, radius: 90, initAnimate: true },
         renderChangeEvent: { fill: true, debug: false }
     },
     {
@@ -48,7 +46,7 @@ const animationFramesForSecondDrop: AnimationFrame[] = [
         time: 0,
         isEvaluated: false,
         highlightIndex: 0,
-        dropEvent: { center: { x: 0.55, y: 0.5 }, radius: 90, initAnimate: false, alpha: 255 },
+        dropEvent: { center: { x: 0.55, y: 0.47 }, radius: 80, initAnimate: false },
         renderChangeEvent: { fill: false, debug: true }
     },
     {
@@ -132,8 +130,7 @@ export const explanatoryDropSketch = (p: p5) => {
             if (frame.dropEvent) {
                 const dropPoint = p.createVector(frame.dropEvent.center.x * p.width, frame.dropEvent.center.y * p.height)
                 const radius = frame.dropEvent.radius
-                const currentColor = getRandomElement<p5.Color>(palette.colors)
-                currentColor.setAlpha(frame.dropEvent.alpha)
+                const currentColor = p.color(255, 180)
 
                 drop = new InkDrop(dropPoint, radius, p.color(currentColor), p.TAU, frame.dropEvent.initAnimate)
                 if (otherDrop) {
@@ -180,6 +177,30 @@ export const explanatoryDropSketch = (p: p5) => {
 
         secondDrop && secondDrop.draw(p)
         firstDrop && firstDrop.draw(p)
+
+
+        if (!firstDrop || !secondDrop)
+            return
+
+        p.fill("#f0527f")
+        p.stroke("#f0527f")
+        const offset = 10
+        p.line(firstDrop.center.x, firstDrop.center.y, firstDrop.center.x + firstDrop.radius, firstDrop.center.y)
+        p.text('r', firstDrop.center.x + firstDrop.radius / 2, firstDrop.center.y - offset / 2)
+        p.text('C', firstDrop.center.x - offset, firstDrop.center.y - offset);
+        p.circle(firstDrop.center.x, firstDrop.center.y, 5)
+
+
+        const firstPoint = secondDrop.inkPoints[secondDrop.inkPoints.length / 2 + 3]
+        p.line(firstPoint.startPoint.x, firstPoint.startPoint.y, firstPoint.targetPoint.x, firstPoint.targetPoint.y)
+
+        p.circle(firstPoint.startPoint.x, firstPoint.startPoint.y, 5)
+        p.text('P', firstPoint.startPoint.x + offset, firstPoint.startPoint.y + offset);
+
+        p.circle(firstPoint.targetPoint.x, firstPoint.targetPoint.y, 5)
+        p.text('P\'', firstPoint.targetPoint.x + offset, firstPoint.targetPoint.y + offset);
+
+
     }
 
 

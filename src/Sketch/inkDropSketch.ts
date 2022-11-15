@@ -18,14 +18,20 @@ export const inkDropSketch = (p: p5) => {
 
     let currentDropRadius = 0
     let currentColor: p5.Color | undefined
+    let saveNextDraw: boolean = false
 
     p.setup = () => {
         p.createCanvas(p.windowWidth - 260, 400)
         palette = getPalette(p)
+        p.createButton('save').mouseClicked(onSave)
         p.createButton('reset').mouseClicked(onReset)
     }
 
     function onReset() { drops.splice(0, drops.length); }
+
+    function onSave() {
+        saveNextDraw = true
+    }
 
     p.mousePressed = () => {
         currentDropRadius = dropSettings.minRadius
@@ -74,6 +80,11 @@ export const inkDropSketch = (p: p5) => {
         drops.forEach(drop => {
             drop.draw(p)
         });
+
+        if (saveNextDraw) {
+            p.saveCanvas('inkdrop', 'png')
+            saveNextDraw = false
+        }
 
         if (!currentColor)
             return

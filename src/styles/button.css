@@ -8,7 +8,7 @@ button {
     transition: all 250ms;
     font-size: small;
     padding: 0.3rem 0.8rem;
-    margin-top: 0.4rem;
+    margin: 0.4rem 0.4rem;
 }
 
 button:hover,

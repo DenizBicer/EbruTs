@@ -1,9 +1,15 @@
+
+import './styles/reset.css'
+import './styles/index.css'
+import './styles/article-image.css'
+import './styles/article.css'
+import './styles/button.css'
+import './styles/text.css'
+
 import p5 from "p5"
 import { animatedDropSketch } from "./Sketch/animatedDropSketch"
 import { explanatoryDropSketch } from "./Sketch/explanatoryDropSketch"
 import { inkDropSketch } from "./Sketch/inkDropSketch"
-import { typographySketch } from "./Sketch/typographySketch"
-
 
 type SketchMap = {
     id: string,
@@ -25,10 +31,6 @@ const sketches: SketchMap[] = [
     {
         id: 'sketch-03',
         sketch: inkDropSketch
-    },
-    {
-        id: 'sketch-04',
-        sketch: typographySketch
     }
 ]
 

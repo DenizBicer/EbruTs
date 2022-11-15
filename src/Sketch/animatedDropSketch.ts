@@ -1,6 +1,5 @@
 import p5 from "p5";
 import { InkDrop } from "../Drop/inkDrop";
-import { Settings } from "../Shared/common";
 import { getRandomElement } from "../Shared/helper";
 import { getPalette, Palette } from "../Shared/palette";
 
@@ -18,7 +17,6 @@ export const animatedDropSketch = (p: p5) => {
 
     const animationDuration = 4000
     const loopAnimation = true
-    const settings: Settings = { debug: false }
 
     let palette: Palette
     let timeStartAnimation: number = 0

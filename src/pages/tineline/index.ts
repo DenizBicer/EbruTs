@@ -1,0 +1,6 @@
+import '../../styles/reset.css'
+import '../../styles/index.css'
+import '../../styles/article-image.css'
+import '../../styles/article.css'
+import '../../styles/button.css'
+import '../../styles/text.css'

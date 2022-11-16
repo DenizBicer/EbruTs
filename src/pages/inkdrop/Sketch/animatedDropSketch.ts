@@ -1,7 +1,7 @@
 import p5 from "p5";
-import { InkDrop } from "../Drop/inkDrop";
-import { getRandomElement } from "../Shared/helper";
-import { getPalette, Palette } from "../Shared/palette";
+import { InkDrop } from "../../../Drop/inkDrop";
+import { getRandomElement } from "../../../Shared/helper";
+import { getPalette, Palette } from "../../../Shared/palette";
 
 
 type AnimatedDrop =

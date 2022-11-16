@@ -1,10 +1,10 @@
 
-import './styles/reset.css'
-import './styles/index.css'
-import './styles/article-image.css'
-import './styles/article.css'
-import './styles/button.css'
-import './styles/text.css'
+import '../../styles/reset.css'
+import '../../styles/index.css'
+import '../../styles/article-image.css'
+import '../../styles/article.css'
+import '../../styles/button.css'
+import '../../styles/text.css'
 
 import p5 from "p5"
 import { animatedDropSketch } from "./Sketch/animatedDropSketch"

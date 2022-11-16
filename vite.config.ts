@@ -10,6 +10,7 @@ export default defineConfig({
                 inkdrop: resolve(__dirname, 'src/pages/inkdrop/index.html'),
                 tineline: resolve(__dirname, 'src/pages/tineline/index.html')
             }
-        }
+        },
+        sourcemap: true
     }
 })

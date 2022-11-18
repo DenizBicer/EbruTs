@@ -1,6 +1,6 @@
 import p5 from "p5"
 import { angleToDir, easeInOutSine } from "../Shared/helper"
-import { inkPoint } from "./inkPoint"
+import { inkPoint, tineLineArgs } from "./inkPoint"
 
 type circleDrop = {
     radius: number
@@ -55,6 +55,11 @@ export class InkDrop {
 
     spreadPoints(dropPoint: p5.Vector, radius: number): void {
         this.inkPoints.forEach(p => p.spread(dropPoint, radius))
+        this.transitionStartTime = Date.now()
+    }
+
+    tineLinePoints(args: tineLineArgs) {
+        this.inkPoints.forEach(p => p.tineline(args))
         this.transitionStartTime = Date.now()
     }
 

@@ -25,9 +25,9 @@ export function getPalette(p: p5): Palette {
 
 const rawPalettes: RawPalette[] = [
     // {
-    //     colors: ['#ffffff', '#519D56', '#25292E'],
+    //     colors: ['#8c8c8c', '#616161', '#a1a1a1', '#c4c4c4', '#ffffff'],
     //     stroke: '#251CFF',
-    //     background: '#E3EEF0'
+    //     background: '#e8e8e8'
     // },
     {
         colors: ['#e3dd34', '#78496b', '#f0527f', '#a7e0e2', '#ffffff'],

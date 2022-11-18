@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dat.gui": "^0.7.7",
+    "dat.gui": "^0.7.9",
     "p5": "^1.5.0"
   },
   "devDependencies": {
+    "@types/p5": "^1.4.3",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3",
-    "@types/p5": "^1.4.3"
+    "vite": "^3.2.3"
   }
 }

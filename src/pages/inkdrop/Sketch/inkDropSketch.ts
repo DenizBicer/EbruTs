@@ -1,6 +1,6 @@
 import p5 from 'p5'
 import { getRandomElement, isInRect } from '../../../Shared/helper'
-import { getPalette, Palette } from '../../../Shared/palette'
+import { getPallete, Palette } from '../../../Shared/palette'
 import { InkDrop } from '../../../Drop/inkDrop'
 
 type DropSettings = { minRadius: number, maxRadius: number }
@@ -24,7 +24,7 @@ export const inkDropSketch = (p: p5) => {
 
     p.setup = () => {
         p.createCanvas(p.windowWidth - 260, 400)
-        palette = getPalette(p)
+        palette = getPallete(p, 0)
         p.createButton('save').mouseClicked(onSave)
         p.createButton('reset').mouseClicked(onReset)
 

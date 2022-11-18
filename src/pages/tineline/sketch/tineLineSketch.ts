@@ -4,7 +4,7 @@ import { GUI } from 'dat.gui'
 import { InkDrop } from "../../../Drop/inkDrop"
 import { tineLineArgs } from "../../../Drop/inkPoint"
 import { getRandomElement, point } from "../../../Shared/helper"
-import { getPalette, Palette } from "../../../Shared/palette"
+import { getPallete, Palette } from "../../../Shared/palette"
 
 const settings = {
     maximumShift: 50,
@@ -20,7 +20,7 @@ export const tineLineSketch = (p: p5) => {
 
     p.setup = () => {
         p.createCanvas(400, 400)
-        palette = getPalette(p)
+        palette = getPallete(p, 1)
         setupInitialDrops()
 
         p.createButton('reset').mouseClicked(onReset)

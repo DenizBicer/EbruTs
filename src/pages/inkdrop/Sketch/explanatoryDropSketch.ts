@@ -1,6 +1,6 @@
 import p5 from "p5"
 import { InkDrop } from "../../../Drop/inkDrop"
-import { getPalette, Palette } from "../../../Shared/palette"
+import { getPallete, Palette } from "../../../Shared/palette"
 
 type AnimationRenderChangeEvent = {
     fill: boolean,
@@ -81,7 +81,7 @@ export const explanatoryDropSketch = (p: p5) => {
 
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
-        palette = getPalette(p)
+        palette = getPallete(p, 0)
         timeStartAnimation = Date.now()
         const p5ElementButton = p.createButton('pause')
         p5ElementButton.mouseClicked(onToggleAnimation)

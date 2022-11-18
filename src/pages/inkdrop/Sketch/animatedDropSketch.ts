@@ -1,7 +1,7 @@
 import p5 from "p5";
 import { InkDrop } from "../../../Drop/inkDrop";
 import { getRandomElement } from "../../../Shared/helper";
-import { getPalette, Palette } from "../../../Shared/palette";
+import { getPallete, Palette } from "../../../Shared/palette";
 
 
 type AnimatedDrop =
@@ -54,7 +54,7 @@ export const animatedDropSketch = (p: p5) => {
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight);
 
-        palette = getPalette(p)
+        palette = getPallete(p, 0)
         timeStartAnimation = Date.now()
     }
 

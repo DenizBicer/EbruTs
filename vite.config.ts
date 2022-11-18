@@ -6,9 +6,7 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                main: resolve(__dirname, 'index.html'),
-                inkdrop: resolve(__dirname, 'src/pages/inkdrop/index.html'),
-                tineline: resolve(__dirname, 'src/pages/tineline/index.html')
+                main: resolve(__dirname, 'index.html')
             }
         },
         sourcemap: true

@@ -1,5 +1,5 @@
 import p5 from "p5"
-import { angleToDir } from "../Shared/helper"
+import { angleToDir, easeInOutSine } from "../Shared/helper"
 import { inkPoint } from "./inkPoint"
 
 type circleDrop = {
@@ -20,6 +20,7 @@ export class InkDrop {
     fill: boolean = true
     debug: boolean = false
 
+    transitionStartTime: number = 0
     transitionDuration: number = 300
 
 
@@ -31,6 +32,8 @@ export class InkDrop {
         const customDrop = dropProperty as customDrop
 
         this.radius = circleDrop.radius
+
+        this.transitionStartTime = Date.now()
 
         if (customDrop.points) {
             customDrop.points.map(p => this.inkPoints.push(new inkPoint(center, p, initAnimate)))
@@ -52,10 +55,18 @@ export class InkDrop {
 
     spreadPoints(dropPoint: p5.Vector, radius: number): void {
         this.inkPoints.forEach(p => p.spread(dropPoint, radius))
+        this.transitionStartTime = Date.now()
     }
 
     update(): void {
-        this.inkPoints.forEach(p => p.update())
+        const elapsedTime = Date.now() - this.transitionStartTime;
+        if (elapsedTime > this.transitionDuration) {
+            return;
+        }
+
+        let t = elapsedTime / this.transitionDuration;
+        t = easeInOutSine(t)
+        this.inkPoints.forEach(p => p.animate(t))
     }
 
     draw(p: p5): void {

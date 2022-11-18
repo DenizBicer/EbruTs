@@ -1,10 +1,10 @@
 import p5 from "p5"
 import { GUI } from 'dat.gui'
 
-import { InkDrop } from "../../../Drop/inkDrop"
-import { tineLineArgs } from "../../../Drop/inkPoint"
-import { getRandomElement, point } from "../../../Shared/helper"
-import { getPallete, Palette } from "../../../Shared/palette"
+import { InkDrop } from "../../drop/inkDrop"
+import { tineLineArgs } from "../../drop/inkPoint"
+import { getRandomElement, point } from "../../Shared/helper"
+import { getPallete, Palette } from "../../Shared/palette"
 
 const settings = {
     maximumShift: 50,

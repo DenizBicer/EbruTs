@@ -1,5 +1,5 @@
 import p5 from "p5"
-import { angleToDir, easeInOutSine } from "../Shared/helper"
+import { angleToDir, easeInOutSine } from "../shared/helper"
 import { inkPoint, tineLineArgs } from "./inkPoint"
 
 type circleDrop = {

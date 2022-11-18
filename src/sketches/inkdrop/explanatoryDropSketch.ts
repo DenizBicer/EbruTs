@@ -1,6 +1,6 @@
 import p5 from "p5"
-import { InkDrop } from "../../../Drop/inkDrop"
-import { getPallete, Palette } from "../../../Shared/palette"
+import { InkDrop } from "../../drop/inkDrop"
+import { getPallete, Palette } from "../../Shared/palette"
 
 type AnimationRenderChangeEvent = {
     fill: boolean,

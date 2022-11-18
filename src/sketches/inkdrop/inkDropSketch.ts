@@ -1,7 +1,7 @@
 import p5 from 'p5'
-import { getRandomElement, isInRect } from '../../../Shared/helper'
-import { getPallete, Palette } from '../../../Shared/palette'
-import { InkDrop } from '../../../Drop/inkDrop'
+import { getRandomElement, isInRect } from '../../Shared/helper'
+import { getPallete, Palette } from '../../Shared/palette'
+import { InkDrop } from '../../drop/inkDrop'
 
 type DropSettings = { minRadius: number, maxRadius: number }
 

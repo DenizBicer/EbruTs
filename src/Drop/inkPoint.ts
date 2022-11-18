@@ -1,5 +1,5 @@
 import p5 from "p5"
-import { distToSegment } from "../Shared/helper"
+import { distToSegment } from "../shared/helper"
 
 function inkDropFunction(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
     const distanceToDrop = p5.Vector.dist(point, dropPoint)

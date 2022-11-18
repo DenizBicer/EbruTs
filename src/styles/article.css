@@ -2,7 +2,6 @@ article {
     display: grid;
     grid-template-columns: 1fr 0.5in [start] 1.25in 5in 1.25in [end] 0.5in 1fr;
 
-    height: 100vh;
     padding: 0.5in 0;
 }
 

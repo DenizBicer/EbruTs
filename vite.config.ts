@@ -9,6 +9,9 @@ export default defineConfig({
                 main: resolve(__dirname, 'index.html')
             }
         },
-        sourcemap: true
-    }
+        sourcemap: true,
+        assetsInlineLimit: 0,
+    },
+    assetsInclude: ['**/*.vert', '**/*.frag']
+
 })

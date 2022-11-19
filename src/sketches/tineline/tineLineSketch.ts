@@ -26,8 +26,9 @@ export const tineLineSketch = (p: p5) => {
         p.createButton('reset').mouseClicked(onReset)
 
         const gui = new GUI()
-        gui.add(settings, 'maximumShift')
-        gui.add(settings, 'sharpness')
+        const folder = gui.addFolder('tineline')
+        folder.add(settings, 'maximumShift')
+        folder.add(settings, 'sharpness')
     }
 
     function onReset() {

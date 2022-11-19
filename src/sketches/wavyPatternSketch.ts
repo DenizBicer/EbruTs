@@ -1,9 +1,9 @@
 import p5 from "p5";
-import { InkDrop } from "../../drop/inkDrop";
-import { getRandomElement } from "../../shared/helper";
-import { getPallete, Palette } from "../../shared/palette";
+import { InkDrop } from "../drop/inkDrop";
+import { getRandomElement } from "../shared/helper";
+import { getPallete, Palette } from "../shared/palette";
 
-export const circularTineLineSketch = (p: p5) => {
+export const wavyPatternSketch = (p: p5) => {
     const drops: InkDrop[] = []
 
     let palette: Palette
@@ -11,9 +11,18 @@ export const circularTineLineSketch = (p: p5) => {
     p.setup = () => {
         p.createCanvas(400, 400)
         palette = getPallete(p, 1)
+
         setupInitialDrops()
 
         p.createButton('reset').mouseClicked(onReset)
+    }
+
+    p.draw = () => {
+        drops.forEach(d => d.update())
+
+        p.background(palette.background)
+
+        drops.forEach(d => d.draw(p))
     }
 
     function onReset() {
@@ -33,13 +42,5 @@ export const circularTineLineSketch = (p: p5) => {
             const newDrop = new InkDrop(center, p.color(currentColor), { radius })
             drops.push(newDrop)
         }
-    }
-
-    p.draw = () => {
-        drops.forEach(drop => drop.update())
-
-        p.background(palette.background)
-
-        drops.forEach(drop => drop.draw(p))
     }
 }

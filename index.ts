@@ -6,12 +6,12 @@ import './src/styles/article.css'
 import './src/styles/button.css'
 import './src/styles/text.css'
 
-import { animatedDropSketch } from "./src/sketches/inkdrop/animatedDropSketch"
-import { explanatoryDropSketch } from "./src/sketches/inkdrop/explanatoryDropSketch"
-import { inkDropSketch } from "./src/sketches/inkdrop/inkDropSketch"
-import { tineLineSketch } from './src/sketches/tineline/tineLineSketch'
-import { wavyPatternSketch } from './src/sketches/wavypattern/wavyPatternSketch'
-import { circularTineLineSketch } from './src/sketches/circularTineLine/circularTineLineSketch'
+import { animatedDropSketch } from './src/sketches/animatedDropSketch'
+import { explanatoryDropSketch } from './src/sketches/explanatoryDropSketch'
+import { inkDropSketch } from './src/sketches/inkDropSketch'
+import { tineLineSketch } from './src/sketches/tineLineSketch'
+import { wavyPatternSketch } from './src/sketches/wavyPatternSketch'
+import { circularTineLineSketch } from './src/sketches/circularTineLineSketch'
 import { sketchManager, SketchMap } from './src/shared/manageSketches'
 
 const sketches: SketchMap[] = [

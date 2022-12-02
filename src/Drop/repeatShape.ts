@@ -31,6 +31,7 @@ export function drawRepetitive(p: p5, center: p5.Vector, points: p5.Vector[], co
 
 }
 
+//https://github.com/openframeworks/openFrameworks/blob/2f24d353b2fbfc900e8a6d128bc57bf22c3de0e2/libs/openFrameworks/graphics/ofPolyline.inl
 function getSmoothed(p: p5, smoothingSize: number, smoothingShape: number, points: p5.Vector[]) {
     const n = points.length
     smoothingSize = smoothingSize < 0 ? 0 : smoothingSize > n ? n : smoothingSize

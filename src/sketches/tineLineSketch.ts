@@ -5,6 +5,7 @@ import { InkDrop } from "../drop/inkDrop"
 import { tineLineArgs } from "../drop/inkPoint"
 import { getRandomElement, point } from "../Shared/helper"
 import { getPallete, Palette } from "../Shared/palette"
+import { drawRepetitive } from "../drop/repeatShape"
 
 const settings = {
     maximumShift: 50,
@@ -42,7 +43,10 @@ export const tineLineSketch = (p: p5) => {
         p.background(palette.background)
 
         drops.forEach(drop => {
+            drop.fill = false
             drop.draw(p)
+            drawRepetitive(p, drop.center, drop.inkPoints.map(p => p.currentPoint), palette.stroke)
+
         });
 
         p.stroke(palette.stroke)

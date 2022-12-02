@@ -12,9 +12,14 @@ import { inkDropSketch } from './src/sketches/inkDropSketch'
 import { tineLineSketch } from './src/sketches/tineLineSketch'
 import { wavyPatternSketch } from './src/sketches/wavyPatternSketch'
 import { circularTineLineSketch } from './src/sketches/circularTineLineSketch'
+import { stylizedDropSketch } from './src/sketches/stylizedDropSketch'
 import { sketchManager, SketchMap } from './src/shared/manageSketches'
 
 const sketches: SketchMap[] = [
+    {
+        id: 'sketch',
+        sketch: stylizedDropSketch,
+    },
     {
         id: 'sketch-01',
         sketch: animatedDropSketch,

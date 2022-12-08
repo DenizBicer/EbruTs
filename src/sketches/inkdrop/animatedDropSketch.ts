@@ -1,8 +1,7 @@
 import p5 from "p5";
-import { InkDrop } from "../drop/inkDrop";
-import { drawRepetitive } from "../drop/repeatShape";
-import { getRandomElement } from "../Shared/helper";
-import { getPallete, Palette } from "../Shared/palette";
+import { InkDrop } from "../../drop/inkDrop";
+import { getRandomElement } from "../../Shared/helper";
+import { getPallete, Palette } from "../../Shared/palette";
 
 
 type AnimatedDrop =
@@ -14,7 +13,7 @@ type AnimatedDrop =
     }
 
 
-export const stylizedDropSketch = (p: p5) => {
+export const animatedDropSketch = (p: p5) => {
 
     const animationDuration = 4000
     const loopAnimation = true
@@ -101,7 +100,6 @@ export const stylizedDropSketch = (p: p5) => {
 
         drops.forEach(drop => {
             drop.draw(p)
-            drawRepetitive(p, drop.center, drop.inkPoints.map(p => p.currentPoint), palette.stroke)
         });
 
     }

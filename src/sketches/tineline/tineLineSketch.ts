@@ -1,11 +1,10 @@
 import p5 from "p5"
 import { GUI } from 'dat.gui'
 
-import { InkDrop } from "../drop/inkDrop"
-import { tineLineArgs } from "../drop/inkPoint"
-import { getRandomElement, point } from "../Shared/helper"
-import { getPallete, Palette } from "../Shared/palette"
-import { drawRepetitive } from "../drop/repeatShape"
+import { InkDrop } from "../../drop/inkDrop"
+import { tineLineArgs } from "../../drop/inkPoint"
+import { getRandomElement, point } from "../../Shared/helper"
+import { getPallete, Palette } from "../../Shared/palette"
 
 const settings = {
     maximumShift: 50,
@@ -27,9 +26,8 @@ export const tineLineSketch = (p: p5) => {
         p.createButton('reset').mouseClicked(onReset)
 
         const gui = new GUI()
-        const folder = gui.addFolder('tineline')
-        folder.add(settings, 'maximumShift')
-        folder.add(settings, 'sharpness')
+        gui.add(settings, 'maximumShift')
+        gui.add(settings, 'sharpness')
     }
 
     function onReset() {
@@ -43,10 +41,7 @@ export const tineLineSketch = (p: p5) => {
         p.background(palette.background)
 
         drops.forEach(drop => {
-            drop.fill = false
             drop.draw(p)
-            drawRepetitive(p, drop.center, drop.inkPoints.map(p => p.currentPoint), palette.stroke)
-
         });
 
         p.stroke(palette.stroke)

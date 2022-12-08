@@ -1,8 +1,7 @@
 import p5 from 'p5'
-import { getRandomElement, isInRect } from '../Shared/helper'
-import { getPallete, Palette } from '../Shared/palette'
-import { InkDrop } from '../drop/inkDrop'
-import { drawRepetitive } from '../drop/repeatShape'
+import { getRandomElement, isInRect } from '../../Shared/helper'
+import { getPallete, Palette } from '../../Shared/palette'
+import { InkDrop } from '../../drop/inkDrop'
 
 type DropSettings = { minRadius: number, maxRadius: number }
 
@@ -83,9 +82,7 @@ export const inkDropSketch = (p: p5) => {
         p.background(palette.background)
 
         drops.forEach(drop => {
-
             drop.draw(p)
-            drawRepetitive(p, drop.center, drop.inkPoints.map(p => p.currentPoint), palette.stroke)
         });
 
         if (saveNextDraw) {

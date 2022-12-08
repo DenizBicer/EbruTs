@@ -1,6 +1,6 @@
 import p5 from "p5"
 import { angleToDir, easeInOutSine } from "../shared/helper"
-import { inkPoint, tineLineArgs, wavyPatternArgs } from "./inkPoint"
+import { inkPoint, tineLineArgs } from "./inkPoint"
 
 type circleDrop = {
     radius: number
@@ -49,6 +49,7 @@ export class InkDrop {
 
             this.inkPoints.push(new inkPoint(center, position, initAnimate))
         }
+
     }
 
 
@@ -59,11 +60,6 @@ export class InkDrop {
 
     tineLinePoints(args: tineLineArgs) {
         this.inkPoints.forEach(p => p.tineline(args))
-        this.transitionStartTime = Date.now()
-    }
-
-    wavyPatternPoints(args: wavyPatternArgs) {
-        this.inkPoints.forEach(p => p.wavyPattern(args))
         this.transitionStartTime = Date.now()
     }
 

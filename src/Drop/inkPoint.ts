@@ -1,7 +1,7 @@
 import p5 from "p5"
 import { distToSegment } from "../shared/helper"
 
-function inkDrop(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
+function inkDropFunction(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
     const distanceToDrop = p5.Vector.dist(point, dropPoint)
     const forceAmount = Math.sqrt(1 + (radius * radius) / (distanceToDrop * distanceToDrop)) // not sure about the variable name
     const direction = p5.Vector.sub(point, dropPoint)
@@ -10,7 +10,7 @@ function inkDrop(point: p5.Vector, dropPoint: p5.Vector, radius: number) {
     return nextP
 }
 
-function tineLine(point: p5.Vector, args: tineLineArgs) {
+function tineLineFunction(point: p5.Vector, args: tineLineArgs) {
     const { lineStart, lineEnd, maximumShift, sharpness } = args
     const distance = distToSegment(point, lineStart, lineEnd)
     const lineUnitVector = p5.Vector.sub(lineEnd, lineStart).normalize()
@@ -19,35 +19,11 @@ function tineLine(point: p5.Vector, args: tineLineArgs) {
     return nextP
 }
 
-
-function wavyPattern(point: p5.Vector, args: wavyPatternArgs) {
-    const { p, amplitude, wavelength, phase, angle } = args
-    const sinT = Math.sin(angle);
-    const cosT = Math.cos(angle);
-
-    const v1 = p.createVector(sinT, cosT)
-    const v2 = p.createVector(cosT, sinT)
-
-    const v = p5.Vector.dot(point, v1)
-    const displacement = v2.mult(amplitude * Math.sin(wavelength * v + phase));
-
-    return p5.Vector.add(point, displacement)
-}
-
-
 export type tineLineArgs = {
     lineStart: p5.Vector
     lineEnd: p5.Vector
     maximumShift: number
     sharpness: number
-}
-
-export type wavyPatternArgs = {
-    p: p5
-    amplitude: number
-    wavelength: number
-    phase: number
-    angle: number
 }
 
 export class inkPoint {
@@ -64,17 +40,12 @@ export class inkPoint {
 
     spread(dropPoint: p5.Vector, radius: number): void {
         this.startPoint = this.currentPoint
-        this.targetPoint = inkDrop(this.targetPoint, dropPoint, radius)
+        this.targetPoint = inkDropFunction(this.targetPoint, dropPoint, radius)
     }
 
     tineline(args: tineLineArgs) {
         this.startPoint = this.currentPoint
-        this.targetPoint = tineLine(this.targetPoint, args)
-    }
-
-    wavyPattern(args: wavyPatternArgs) {
-        this.startPoint = this.currentPoint
-        this.targetPoint = wavyPattern(this.targetPoint, args)
+        this.targetPoint = tineLineFunction(this.targetPoint, args)
     }
 
     animate(t: number): void {

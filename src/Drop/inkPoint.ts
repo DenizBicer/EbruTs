@@ -56,6 +56,7 @@ export class inkPoint {
     targetPoint: p5.Vector
 
     pointHistory: p5.Vector[] = []
+    distantHistory: number[] = []
 
     constructor(start: p5.Vector, target: p5.Vector, initAnimate: boolean) {
         this.startPoint = initAnimate ? start : target
@@ -63,27 +64,37 @@ export class inkPoint {
         this.targetPoint = target
         this.pointHistory.push(start)
         this.pointHistory.push(target)
+        this.distantHistory.push(0)
+        this.distantHistory.push(p5.Vector.dist(start, target))
+    }
+
+    addHistory(point: p5.Vector) {
+        const lastPoint = this.pointHistory[this.pointHistory.length - 1]
+        const lastDistance = this.distantHistory[this.distantHistory.length - 1]
+
+        this.pointHistory.push(point)
+        this.distantHistory.push(lastDistance + p5.Vector.dist(lastPoint, point))
     }
 
     spread(dropPoint: p5.Vector, radius: number): void {
         this.startPoint = this.currentPoint
         this.targetPoint = inkDrop(this.targetPoint, dropPoint, radius)
 
-        this.pointHistory.push(this.targetPoint)
+        this.addHistory(this.targetPoint)
     }
 
     tineline(args: tineLineArgs) {
         this.startPoint = this.currentPoint
         this.targetPoint = tineLine(this.targetPoint, args)
 
-        this.pointHistory.push(this.targetPoint)
+        this.addHistory(this.targetPoint)
     }
 
     wavyPattern(args: wavyPatternArgs) {
         this.startPoint = this.currentPoint
         this.targetPoint = wavyPattern(this.targetPoint, args)
 
-        this.pointHistory.push(this.targetPoint)
+        this.addHistory(this.targetPoint)
     }
 
     animate(t: number): void {
@@ -96,12 +107,37 @@ export class inkPoint {
         return position
     }
 
-    getVertexAtHistorty(t: number): p5.Vector {
+    getVertexAtHistory(t: number): p5.Vector {
         const strechedT = t * (this.pointHistory.length - 1)
         const startIndex = Math.max(Math.floor(strechedT), 0)
         const endIndex = Math.min(startIndex + 1, this.pointHistory.length - 1)
 
         const position = p5.Vector.lerp(this.pointHistory[startIndex], this.pointHistory[endIndex], strechedT - Math.floor(strechedT))
         return position
+    }
+
+    getVertexAtDistance(distance: number): p5.Vector {
+        for (let index = 0; index < this.distantHistory.length - 1; index++) {
+            const currentDistance = this.distantHistory[index];
+            const nextDistance = this.distantHistory[index + 1];
+            if (distance < currentDistance || distance > nextDistance)
+                continue
+
+            const currentPoint = this.pointHistory[index]
+            const nextPoint = this.pointHistory[index + 1]
+            const deltaDistance = distance - currentDistance
+
+            const position = p5.Vector.add(
+                currentPoint, p5.Vector.mult(
+                    p5.Vector.normalize(p5.Vector.sub(nextPoint, currentPoint)),
+                    deltaDistance))
+            return position
+        }
+
+        return this.pointHistory[this.pointHistory.length - 1]
+    }
+
+    getLength(): number {
+        return this.distantHistory[this.distantHistory.length - 1]
     }
 }

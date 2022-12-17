@@ -22,9 +22,12 @@ export const inkDropPlotSketch = (p: p5) => {
     let saveNextDraw: boolean = false
 
     let initialPixelDensity: number = 1
+    let gui: GUI
 
     const settings = {
-        repeatCount: 20,
+        lineThickness: 2,
+        lineOpacity: 80,
+        repeatDistanceInterval: 5
     }
 
     p.setup = () => {
@@ -36,11 +39,15 @@ export const inkDropPlotSketch = (p: p5) => {
         initialPixelDensity = p.pixelDensity()
 
 
-        const gui = new GUI()
-        gui.add(settings, 'repeatCount')
+        gui = new GUI()
+        gui.add(settings, 'repeatDistanceInterval')
+        gui.add(settings, 'lineThickness')
+        gui.add(settings, 'lineOpacity')
     }
 
-    function onReset() { drops.splice(0, drops.length); }
+    function onReset() {
+        drops.splice(0, drops.length);
+    }
 
     function onSave() {
         saveNextDraw = true
@@ -68,8 +75,9 @@ export const inkDropPlotSketch = (p: p5) => {
         const radius = currentDropRadius
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
-        drops.push(new InkDrop(dropPoint, p.color(currentColor), { radius }))
-
+        const newDrop = new InkDrop(dropPoint, p.color(currentColor), { radius })
+        drops.push(newDrop)
+        gui.add(newDrop, 'active')
         currentDropRadius = 0
     }
 
@@ -89,9 +97,11 @@ export const inkDropPlotSketch = (p: p5) => {
         update()
 
         p.background(palette.background)
+        p.stroke(37, 28, 255, settings.lineOpacity)
+        p.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(p, settings.repeatCount)
+            drop.drawPlot(p, settings.repeatDistanceInterval)
         });
 
         if (saveNextDraw) {

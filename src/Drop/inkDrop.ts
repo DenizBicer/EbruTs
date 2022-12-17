@@ -15,10 +15,11 @@ export class InkDrop {
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 300
+    vertexCount: number = 600
     color: p5.Color
     fill: boolean = true
     debug: boolean = false
+    active: boolean = true
 
     transitionStartTime: number = 0
     transitionDuration: number = 300
@@ -125,17 +126,24 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5, repeatCount: number): void {
+    drawPlot(p: p5, repeatDistanceInterval: number): void {
+        if (!this.active)
+            return
+
         p.push()
         p.noFill()
-        p.stroke(37, 28, 255, 80)
-        p.strokeWeight(2)
+
+
+        const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
+        const repeatCount = maxDistance / repeatDistanceInterval
 
         for (let index = 1; index <= repeatCount; index++) {
-            const t = index / repeatCount
+
+            const d = index * repeatDistanceInterval
+
             p.beginShape()
             this.inkPoints.forEach(ip => {
-                const vertex = ip.getVertexAtHistorty(t)
+                const vertex = ip.getVertexAtDistance(d)
                 p.vertex(vertex.x, vertex.y)
             })
             p.endShape(p.CLOSE)

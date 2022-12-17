@@ -27,7 +27,7 @@ export const inkDropPlotSketch = (p: p5) => {
     const settings = {
         lineThickness: 2,
         lineOpacity: 80,
-        repeatDistanceInterval: 5
+        repeatDistanceInterval: 3
     }
 
     p.setup = () => {
@@ -75,10 +75,18 @@ export const inkDropPlotSketch = (p: p5) => {
         const radius = currentDropRadius
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
+
+        drop(dropPoint, currentColor, radius, drops.length === 0)
+
+        currentDropRadius = 0
+    }
+
+
+    function drop(dropPoint: p5.Vector, currentColor: p5.Color, radius: number, active: boolean) {
         const newDrop = new InkDrop(dropPoint, p.color(currentColor), { radius })
+        newDrop.active = active
         drops.push(newDrop)
         gui.add(newDrop, 'active')
-        currentDropRadius = 0
     }
 
 

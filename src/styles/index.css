@@ -20,4 +20,10 @@
 
     -webkit-user-select: none;
     user-select: none;
+
+}
+
+.postcard {
+    width: 840px;
+    height: 596px;
 }

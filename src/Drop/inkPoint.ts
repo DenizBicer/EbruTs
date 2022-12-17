@@ -55,30 +55,53 @@ export class inkPoint {
     startPoint: p5.Vector
     targetPoint: p5.Vector
 
+    pointHistory: p5.Vector[] = []
 
     constructor(start: p5.Vector, target: p5.Vector, initAnimate: boolean) {
         this.startPoint = initAnimate ? start : target
         this.currentPoint = initAnimate ? start : target
         this.targetPoint = target
+        this.pointHistory.push(start)
+        this.pointHistory.push(target)
     }
 
     spread(dropPoint: p5.Vector, radius: number): void {
         this.startPoint = this.currentPoint
         this.targetPoint = inkDrop(this.targetPoint, dropPoint, radius)
+
+        this.pointHistory.push(this.targetPoint)
     }
 
     tineline(args: tineLineArgs) {
         this.startPoint = this.currentPoint
         this.targetPoint = tineLine(this.targetPoint, args)
+
+        this.pointHistory.push(this.targetPoint)
     }
 
     wavyPattern(args: wavyPatternArgs) {
         this.startPoint = this.currentPoint
         this.targetPoint = wavyPattern(this.targetPoint, args)
+
+        this.pointHistory.push(this.targetPoint)
     }
 
     animate(t: number): void {
         const position = p5.Vector.lerp(this.startPoint, this.targetPoint, t)
         this.currentPoint = position
+    }
+
+    getVertexAt(t: number): p5.Vector {
+        const position = p5.Vector.lerp(this.startPoint, this.targetPoint, t)
+        return position
+    }
+
+    getVertexAtHistorty(t: number): p5.Vector {
+        const strechedT = t * (this.pointHistory.length - 1)
+        const startIndex = Math.max(Math.floor(strechedT), 0)
+        const endIndex = Math.min(startIndex + 1, this.pointHistory.length - 1)
+
+        const position = p5.Vector.lerp(this.pointHistory[startIndex], this.pointHistory[endIndex], strechedT - Math.floor(strechedT))
+        return position
     }
 }

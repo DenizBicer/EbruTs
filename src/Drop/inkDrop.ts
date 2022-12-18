@@ -15,7 +15,7 @@ export class InkDrop {
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 50
+    vertexCount: number = 100
     color: p5.Color
     fill: boolean = true
     debug: boolean = false

@@ -4,6 +4,7 @@ import p5Svg from "p5.js-svg"
 import { getRandomElement, isInRect } from '../Shared/helper'
 import { InkDrop } from '../drop/inkDrop'
 import { GUI } from 'dat.gui'
+import { angleToDir } from "../shared/helper"
 
 p5Svg(p5)
 
@@ -35,6 +36,7 @@ export const inkDropPlotSketch = (p) => {
         p.createCanvas(p.windowWidth - 260, 400)
         p.createButton('save').mouseClicked(onSave)
         p.createButton('reset').mouseClicked(onReset)
+        p.createButton('add').mouseClicked(onAdd)
 
         p.strokeWeight(1); // do 0.1 for laser
         p.stroke(255, 0, 0); // red is good for laser
@@ -56,6 +58,18 @@ export const inkDropPlotSketch = (p) => {
         svgG = p.createGraphics(p.width, p.height, p.SVG)
     }
 
+    function onAdd() {
+        const r = p.random(200);
+        const theta = p.random(Math.PI * 2);
+        const vector = angleToDir(theta)
+        const position = p5.Vector.add(p.createVector(p.width / 2, p.height / 2), p5.Vector.mult(vector, r))
+
+        const radius = p.random(dropSettings.maxRadius) + 10
+
+        // drop(position.x, position.y, currentColor, radius, drops.length === 0)
+        drop(position.x, position.y, currentColor, radius, true)
+    }
+
     p.mousePressed = () => {
         currentDropRadius = dropSettings.minRadius
         currentColor = p.color(0)
@@ -73,16 +87,14 @@ export const inkDropPlotSketch = (p) => {
         if (!currentColor)
             return
 
-        const dropPoint = p.createVector(p.mouseX, p.mouseY)
-        const radius = currentDropRadius
-
-        drop(dropPoint, currentColor, radius, drops.length === 0)
+        drop(p.mouseX, p.mouseY, currentColor, currentDropRadius, drops.length === 0)
 
         currentDropRadius = 0
     }
 
 
-    function drop(dropPoint, currentColor, radius, active) {
+    function drop(x, y, currentColor, radius, active) {
+        const dropPoint = p.createVector(x, y)
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
 
@@ -105,7 +117,7 @@ export const inkDropPlotSketch = (p) => {
 
     p.draw = () => {
         update()
-        p.background(255)
+        p.background(200)
         p.stroke(37, 28, 255, settings.lineOpacity)
         p.strokeWeight(settings.lineThickness)
 
@@ -115,7 +127,7 @@ export const inkDropPlotSketch = (p) => {
 
         // p.save('drop.svg')
         if (saveNextDraw) {
-            svgG.background(255)
+            svgG.background(200)
             svgG.stroke(37, 28, 255, settings.lineOpacity)
             svgG.strokeWeight(settings.lineThickness)
             drops.forEach(drop => {

@@ -15,7 +15,7 @@ export class InkDrop {
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 150
+    vertexCount: number = 50
     color: p5.Color
     fill: boolean = true
     debug: boolean = false
@@ -144,10 +144,35 @@ export class InkDrop {
             p.beginShape()
             this.inkPoints.forEach(ip => {
                 const vertex = ip.getVertexAtDistance(d)
-                p.vertex(vertex.x, vertex.y)
+                p.curveVertex(vertex.x, vertex.y)
             })
             p.endShape(p.CLOSE)
         }
         p.pop()
+    }
+
+    drawSVG(p: p5, repeatDistanceInterval: number, svgG: any) {
+        if (!this.active)
+            return
+
+        svgG.push()
+        svgG.noFill()
+
+
+        const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
+        const repeatCount = maxDistance / repeatDistanceInterval
+
+        for (let index = 1; index <= repeatCount; index++) {
+
+            const d = index * repeatDistanceInterval
+
+            svgG.beginShape()
+            this.inkPoints.forEach(ip => {
+                const vertex = ip.getVertexAtDistance(d)
+                svgG.curveVertex(vertex.x, vertex.y)
+            })
+            svgG.endShape(p.CLOSE)
+        }
+        svgG.pop()
     }
 }

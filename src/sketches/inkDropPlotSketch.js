@@ -25,18 +25,28 @@ export const inkDropPlotSketch = (p) => {
     let gui
     let svgG
 
+    let loopActivate = false
+    let loopActiveIndex = 0
+    let loopElapseTime = 250
+    let lastLoopActiveTime = 0
+
+
     const settings = {
         lineThickness: 2,
         lineOpacity: 80,
-        repeatDistanceInterval: 3
+        repeatDistanceInterval: 3,
+        repeatThickness: 40
     }
 
     p.setup = () => {
 
-        p.createCanvas(p.windowWidth - 260, 400)
+        p.createCanvas(840, 596)
         p.createButton('save').mouseClicked(onSave)
         p.createButton('reset').mouseClicked(onReset)
         p.createButton('add').mouseClicked(onAdd)
+        p.createButton('toggleLoopActivate').mouseClicked(onToggleLoopActivate)
+        p.createButton('activateAll').mouseClicked(onActivateAll)
+        p.createButton('deactivateAll').mouseClicked(onDeactivateAll)
 
         p.strokeWeight(1); // do 0.1 for laser
         p.stroke(255, 0, 0); // red is good for laser
@@ -45,8 +55,15 @@ export const inkDropPlotSketch = (p) => {
 
         gui = new GUI()
         gui.add(settings, 'repeatDistanceInterval')
+        gui.add(settings, 'repeatThickness')
         gui.add(settings, 'lineThickness')
         gui.add(settings, 'lineOpacity')
+        gui.close()
+
+        currentColor = p.color(0)
+        for (let index = 0; index < 15; index++) {
+            onAdd()
+        }
     }
 
     function onReset() {
@@ -59,15 +76,27 @@ export const inkDropPlotSketch = (p) => {
     }
 
     function onAdd() {
-        const r = p.random(200);
+        const r = p.random(150);
         const theta = p.random(Math.PI * 2);
         const vector = angleToDir(theta)
         const position = p5.Vector.add(p.createVector(p.width / 2, p.height / 2), p5.Vector.mult(vector, r))
 
-        const radius = p.random(dropSettings.maxRadius) + 10
+        const radius = p.random(50) + 10
 
         // drop(position.x, position.y, currentColor, radius, drops.length === 0)
         drop(position.x, position.y, currentColor, radius, true)
+    }
+
+    function onToggleLoopActivate() {
+        loopActivate = !loopActivate
+    }
+
+    function onActivateAll() {
+        drops.forEach(d => d.active = true)
+    }
+
+    function onDeactivateAll() {
+        drops.forEach(d => d.active = false)
     }
 
     p.mousePressed = () => {
@@ -112,6 +141,19 @@ export const inkDropPlotSketch = (p) => {
         }
 
         drops.forEach(drop => drop.update())
+
+        if (!loopActivate)
+            return
+
+        const elapsedTime = Date.now() - lastLoopActiveTime
+
+        if (elapsedTime < loopElapseTime)
+            return
+
+        lastLoopActiveTime = Date.now()
+        loopActiveIndex = (loopActiveIndex + 1) % drops.length
+
+        drops.forEach((drop, i) => drop.active = i === loopActiveIndex)
     }
 
 
@@ -122,7 +164,7 @@ export const inkDropPlotSketch = (p) => {
         p.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(p, settings.repeatDistanceInterval)
+            drop.drawPlot(p, settings.repeatDistanceInterval, settings.repeatThickness)
         });
 
         // p.save('drop.svg')
@@ -131,7 +173,7 @@ export const inkDropPlotSketch = (p) => {
             svgG.stroke(37, 28, 255, settings.lineOpacity)
             svgG.strokeWeight(settings.lineThickness)
             drops.forEach(drop => {
-                drop.drawSVG(p, settings.repeatDistanceInterval, svgG)
+                drop.drawSVG(p, settings.repeatDistanceInterval, settings.repeatThickness, svgG)
             });
             svgG.save('print.svg')
 

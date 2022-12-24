@@ -126,7 +126,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5, repeatDistanceInterval: number): void {
+    drawPlot(p: p5, repeatDistanceInterval: number, repeatThickness: number): void {
         if (!this.active)
             return
 
@@ -137,9 +137,14 @@ export class InkDrop {
         const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
         const repeatCount = maxDistance / repeatDistanceInterval
 
-        for (let index = 1; index <= repeatCount; index++) {
+        const maxThickness = repeatCount * repeatDistanceInterval
+
+        for (let index = repeatCount; index > 0; index--) {
 
             const d = index * repeatDistanceInterval
+
+            if ((maxThickness - d) > repeatThickness)
+                break
 
             p.beginShape()
             this.inkPoints.forEach(ip => {
@@ -151,7 +156,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawSVG(p: p5, repeatDistanceInterval: number, svgG: any) {
+    drawSVG(p: p5, repeatDistanceInterval: number, repeatThickness: number, svgG: any) {
         if (!this.active)
             return
 
@@ -162,9 +167,15 @@ export class InkDrop {
         const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
         const repeatCount = maxDistance / repeatDistanceInterval
 
-        for (let index = 1; index <= repeatCount; index++) {
+        const maxThickness = repeatCount * repeatDistanceInterval
+
+
+        for (let index = repeatCount; index > 0; index--) {
 
             const d = index * repeatDistanceInterval
+
+            if ((maxThickness - d) > repeatThickness)
+                break
 
             svgG.beginShape()
             this.inkPoints.forEach(ip => {

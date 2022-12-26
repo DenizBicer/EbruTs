@@ -15,7 +15,7 @@ export class InkDrop {
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 800
+    vertexCount: number = 400
     color: p5.Color
     fill: boolean = true
     debug: boolean = false
@@ -126,10 +126,17 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number): void {
+    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, renderOutline: boolean): void {
         if (!this.active)
             return
 
+        if (renderOutline)
+            this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+        else
+            this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+    }
+
+    drawPlotOutline(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
         p.push()
         p.noFill()
 
@@ -159,6 +166,40 @@ export class InkDrop {
             })
             p.endShape(p.CLOSE)
         }
+        p.pop()
+    }
+
+    drawPlotHistory(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
+
+        p.push()
+        p.noFill()
+
+
+        const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
+        const repeatCount = maxDistance / repeatDistanceInterval
+
+        const maxThickness = repeatCount * repeatDistanceInterval
+        this.inkPoints.forEach(ip => {
+            p.beginShape()
+            for (let index = repeatCount; index > 0; index--) {
+
+                const d = index * repeatDistanceInterval
+
+                if ((maxThickness - d) > repeatThickness)
+                    break
+
+                const vertex = ip.getVertexAtDistance(d)
+
+                if (useFlatPen) {
+                    p.rect(vertex.x, vertex.y, penWidth, 0.5)
+                }
+                else {
+                    p.curveVertex(vertex.x, vertex.y)
+                }
+            }
+            p.endShape()
+        })
+
         p.pop()
     }
 }

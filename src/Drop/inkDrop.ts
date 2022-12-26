@@ -15,7 +15,7 @@ export class InkDrop {
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 100
+    vertexCount: number = 800
     color: p5.Color
     fill: boolean = true
     debug: boolean = false
@@ -126,7 +126,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5, repeatDistanceInterval: number, repeatThickness: number): void {
+    drawPlot(p: p5, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number): void {
         if (!this.active)
             return
 
@@ -149,7 +149,13 @@ export class InkDrop {
             p.beginShape()
             this.inkPoints.forEach(ip => {
                 const vertex = ip.getVertexAtDistance(d)
-                p.curveVertex(vertex.x, vertex.y)
+
+                if (useFlatPen) {
+                    p.rect(vertex.x, vertex.y, penWidth, 0.5)
+                }
+                else {
+                    p.curveVertex(vertex.x, vertex.y)
+                }
             })
             p.endShape(p.CLOSE)
         }

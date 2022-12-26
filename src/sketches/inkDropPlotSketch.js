@@ -32,13 +32,17 @@ export const inkDropPlotSketch = (p) => {
 
 
     const settings = {
-        lineThickness: 2,
-        lineOpacity: 80,
-        repeatDistanceInterval: 3,
-        repeatThickness: 40
+        lineThickness: 1,
+        lineOpacity: 140,
+        repeatDistanceInterval: 11,
+        repeatThickness: 70,
+        useFlatPen: true,
+        penWidth: 11, // 2mm 
     }
 
     p.setup = () => {
+
+        // 148 x 105mm
 
         p.createCanvas(840, 596)
         p.createButton('save').mouseClicked(onSave)
@@ -58,10 +62,12 @@ export const inkDropPlotSketch = (p) => {
         gui.add(settings, 'repeatThickness')
         gui.add(settings, 'lineThickness')
         gui.add(settings, 'lineOpacity')
+        gui.add(settings, 'useFlatPen')
+        gui.add(settings, 'penWidth')
         gui.close()
 
         currentColor = p.color(0)
-        for (let index = 0; index < 15; index++) {
+        for (let index = 0; index < 5; index++) {
             onAdd()
         }
     }
@@ -81,7 +87,7 @@ export const inkDropPlotSketch = (p) => {
         const vector = angleToDir(theta)
         const position = p5.Vector.add(p.createVector(p.width / 2, p.height / 2), p5.Vector.mult(vector, r))
 
-        const radius = p.random(50) + 10
+        const radius = p.random(100) + 50
 
         // drop(position.x, position.y, currentColor, radius, drops.length === 0)
         drop(position.x, position.y, currentColor, radius, true)
@@ -116,7 +122,7 @@ export const inkDropPlotSketch = (p) => {
         if (!currentColor)
             return
 
-        drop(p.mouseX, p.mouseY, currentColor, currentDropRadius, drops.length === 0)
+        drop(p.mouseX, p.mouseY, currentColor, currentDropRadius, true)
 
         currentDropRadius = 0
     }
@@ -160,11 +166,12 @@ export const inkDropPlotSketch = (p) => {
     p.draw = () => {
         update()
         p.background(200)
-        p.stroke(37, 28, 255, settings.lineOpacity)
+        // p.stroke(37, 28, 255, settings.lineOpacity)
+        p.stroke(0, 0, 0, settings.lineOpacity)
         p.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(p, settings.repeatDistanceInterval, settings.repeatThickness)
+            drop.drawPlot(p, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth)
         });
 
         // p.save('drop.svg')

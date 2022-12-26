@@ -126,7 +126,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number): void {
+    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number): void {
         if (!this.active)
             return
 
@@ -160,36 +160,5 @@ export class InkDrop {
             p.endShape(p.CLOSE)
         }
         p.pop()
-    }
-
-    drawSVG(p: p5, repeatDistanceInterval: number, repeatThickness: number, svgG: any) {
-        if (!this.active)
-            return
-
-        svgG.push()
-        svgG.noFill()
-
-
-        const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
-        const repeatCount = maxDistance / repeatDistanceInterval
-
-        const maxThickness = repeatCount * repeatDistanceInterval
-
-
-        for (let index = repeatCount; index > 0; index--) {
-
-            const d = index * repeatDistanceInterval
-
-            if ((maxThickness - d) > repeatThickness)
-                break
-
-            svgG.beginShape()
-            this.inkPoints.forEach(ip => {
-                const vertex = ip.getVertexAtDistance(d)
-                svgG.curveVertex(vertex.x, vertex.y)
-            })
-            svgG.endShape(p.CLOSE)
-        }
-        svgG.pop()
     }
 }

@@ -165,25 +165,20 @@ export const inkDropPlotSketch = (p) => {
 
     p.draw = () => {
         update()
-        p.background(200)
-        // p.stroke(37, 28, 255, settings.lineOpacity)
-        p.stroke(0, 0, 0, settings.lineOpacity)
-        p.strokeWeight(settings.lineThickness)
+        const renderer = saveNextDraw ? svgG : p;
+
+        renderer.background(200)
+        // renderer.stroke(37, 28, 255, settings.lineOpacity)
+        renderer.stroke(0, 0, 0, settings.lineOpacity)
+        renderer.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(p, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth)
+            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth)
         });
 
         // p.save('drop.svg')
         if (saveNextDraw) {
-            svgG.background(200)
-            svgG.stroke(37, 28, 255, settings.lineOpacity)
-            svgG.strokeWeight(settings.lineThickness)
-            drops.forEach(drop => {
-                drop.drawSVG(p, settings.repeatDistanceInterval, settings.repeatThickness, svgG)
-            });
             svgG.save('print.svg')
-
             saveNextDraw = false
         }
 
@@ -193,9 +188,9 @@ export const inkDropPlotSketch = (p) => {
         if (!isInRect(p.mouseX, p.mouseY, 0, 0, p.width, p.height))
             return
 
-        p.fill(currentColor)
-        p.noStroke()
-        p.circle(p.mouseX, p.mouseY, currentDropRadius * 2)
+        renderer.fill(currentColor)
+        renderer.noStroke()
+        renderer.circle(p.mouseX, p.mouseY, currentDropRadius * 2)
 
     }
 }

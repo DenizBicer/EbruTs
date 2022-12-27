@@ -34,11 +34,11 @@ export const inkDropPlotSketch = (p) => {
     const settings = {
         lineThickness: 1,
         lineOpacity: 140,
-        repeatDistanceInterval: 1,
-        repeatThickness: 150,
+        repeatDistanceInterval: 4,
+        repeatThickness: 80,
         useFlatPen: false,
         penWidth: 11, // 2mm 
-        renderOutline: false,
+        mode: 'outline',
     }
 
     p.setup = () => {
@@ -65,7 +65,7 @@ export const inkDropPlotSketch = (p) => {
         gui.add(settings, 'lineOpacity')
         gui.add(settings, 'useFlatPen')
         gui.add(settings, 'penWidth')
-        gui.add(settings, 'renderOutline')
+        gui.add(settings, 'mode', { outline: 'outline', history: 'history', historySpiral: 'history-spiral' })
         gui.close()
 
         currentColor = p.color(0)
@@ -175,7 +175,7 @@ export const inkDropPlotSketch = (p) => {
         renderer.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth, settings.renderOutline)
+            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth, settings.mode)
         });
 
         // p.save('drop.svg')

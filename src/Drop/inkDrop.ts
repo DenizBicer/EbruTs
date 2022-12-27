@@ -10,12 +10,14 @@ type customDrop = {
     points: p5.Vector[]
 }
 
+type Mode = 'outline' | 'history' | 'history-spiral'
+
 export class InkDrop {
 
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 300
+    vertexCount: number = 100
     color: p5.Color
     fill: boolean = true
     debug: boolean = false
@@ -126,14 +128,21 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, renderOutline: boolean): void {
+    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, mode: Mode): void {
         if (!this.active)
             return
 
-        if (renderOutline)
-            this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
-        else
-            this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+        switch (mode) {
+            case 'outline':
+                this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+                break;
+            case 'history':
+                this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+                break;
+            case 'history-spiral':
+                this.drawPlotHistorySpiral(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+                break;
+        }
     }
 
     drawPlotOutline(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
@@ -199,6 +208,41 @@ export class InkDrop {
             }
             p.endShape()
         })
+
+        p.pop()
+    }
+
+    drawPlotHistorySpiral(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
+        p.push()
+        p.noFill()
+        const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
+        const repeatCount = maxDistance / repeatDistanceInterval
+
+        const maxThickness = repeatCount * repeatDistanceInterval
+        for (let ipIndex = 0; ipIndex < this.inkPoints.length; ipIndex++) {
+            p.beginShape()
+            let offset = 0
+            for (let index = repeatCount; index > 0; index--) {
+
+                const d = index * repeatDistanceInterval
+
+                if ((maxThickness - d) > repeatThickness)
+                    break
+
+                const i = (ipIndex + offset) % this.inkPoints.length
+                offset++
+
+                const vertex = this.inkPoints[i].getVertexAtDistance(d)
+
+                if (useFlatPen) {
+                    p.rect(vertex.x, vertex.y, penWidth, 0.5)
+                }
+                else {
+                    p.curveVertex(vertex.x, vertex.y)
+                }
+            }
+            p.endShape()
+        }
 
         p.pop()
     }

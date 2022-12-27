@@ -34,7 +34,7 @@ export const inkDropPlotSketch = (p) => {
     const settings = {
         lineThickness: 1,
         lineOpacity: 140,
-        repeatDistanceInterval: 11,
+        repeatDistanceInterval: 1,
         repeatThickness: 150,
         useFlatPen: false,
         penWidth: 11, // 2mm 

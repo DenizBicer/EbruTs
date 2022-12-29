@@ -35,10 +35,10 @@ export const inkDropPlotSketch = (p) => {
         lineThickness: 1,
         lineOpacity: 140,
         repeatDistanceInterval: 4,
-        repeatThickness: 80,
+        repeatThickness: 150,
         useFlatPen: false,
         penWidth: 11, // 2mm 
-        mode: 'outline',
+        mode: 'history',
     }
 
     p.setup = () => {
@@ -69,7 +69,7 @@ export const inkDropPlotSketch = (p) => {
         gui.close()
 
         currentColor = p.color(0)
-        for (let index = 0; index < 5; index++) {
+        for (let index = 0; index < 0; index++) {
             onAdd()
         }
     }
@@ -124,7 +124,7 @@ export const inkDropPlotSketch = (p) => {
         if (!currentColor)
             return
 
-        drop(p.mouseX, p.mouseY, currentColor, currentDropRadius, true)
+        drop(p.mouseX, p.mouseY, currentColor, currentDropRadius, drops.length === 0)
 
         currentDropRadius = 0
     }

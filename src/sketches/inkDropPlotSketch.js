@@ -52,6 +52,7 @@ export const inkDropPlotSketch = (p) => {
         p.createButton('toggleLoopActivate').mouseClicked(onToggleLoopActivate)
         p.createButton('activateAll').mouseClicked(onActivateAll)
         p.createButton('deactivateAll').mouseClicked(onDeactivateAll)
+        p.createButton('auto').mouseClicked(onAutoAdd)
 
         p.strokeWeight(1); // do 0.1 for laser
         p.stroke(255, 0, 0); // red is good for laser
@@ -71,6 +72,17 @@ export const inkDropPlotSketch = (p) => {
         currentColor = p.color(0)
         for (let index = 0; index < 0; index++) {
             onAdd()
+        }
+    }
+
+    let autoAddIntervalId;
+    function onAutoAdd() {
+        if (!autoAddIntervalId) {
+            autoAddIntervalId = setInterval(onAdd, 500)
+        }
+        else {
+            clearInterval(autoAddIntervalId)
+            autoAddIntervalId = null
         }
     }
 
@@ -135,7 +147,7 @@ export const inkDropPlotSketch = (p) => {
 
         drops.forEach(drop => drop.spreadPoints(dropPoint, radius))
 
-        const newDrop = new InkDrop(dropPoint, p.color(currentColor), { radius })
+        const newDrop = new InkDrop(dropPoint, p.color(currentColor), { radius }, true)
         newDrop.active = active
         drops.push(newDrop)
         gui.add(newDrop, 'active')

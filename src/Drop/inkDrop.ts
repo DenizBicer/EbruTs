@@ -24,7 +24,7 @@ export class InkDrop {
     active: boolean = true
 
     transitionStartTime: number = 0
-    transitionDuration: number = 300
+    transitionDuration: number = 500
 
 
     constructor(center: p5.Vector, color: p5.Color, dropProperty: circleDrop | customDrop, initAnimate: boolean = false) {

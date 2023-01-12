@@ -100,6 +100,13 @@ export class inkPoint {
     animate(t: number): void {
         const position = p5.Vector.lerp(this.startPoint, this.targetPoint, t)
         this.currentPoint = position
+        this.pointHistory[this.pointHistory.length - 1] = position
+
+
+        const lastDistance = this.distantHistory[this.distantHistory.length - 2]
+        const lastSegmentLength = p5.Vector.dist(this.startPoint, position)
+        const newDistance = lastDistance + lastSegmentLength
+        this.distantHistory[this.distantHistory.length - 1] = newDistance
     }
 
     getVertexAt(t: number): p5.Vector {

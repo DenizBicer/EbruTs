@@ -78,7 +78,7 @@ export const inkDropPlotSketch = (p) => {
     let autoAddIntervalId;
     function onAutoAdd() {
         if (!autoAddIntervalId) {
-            autoAddIntervalId = setInterval(onAdd, 500)
+            autoAddIntervalId = setInterval(onAdd, 300)
         }
         else {
             clearInterval(autoAddIntervalId)

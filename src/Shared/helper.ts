@@ -15,6 +15,10 @@ export function easeInOutSine(x: number): number {
     return -(Math.cos(Math.PI * x) - 1) / 2;
 }
 
+export function easeOutCirc(x: number): number {
+    return Math.sqrt(1 - Math.pow(x - 1, 2));
+}
+
 export function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);

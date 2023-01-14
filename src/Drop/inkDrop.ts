@@ -1,5 +1,5 @@
 import p5 from "p5"
-import { angleToDir, easeInOutSine } from "../shared/helper"
+import { angleToDir, easeInOutSine, easeOutCirc } from "../shared/helper"
 import { inkPoint, tineLineArgs, wavyPatternArgs } from "./inkPoint"
 
 type circleDrop = {
@@ -77,7 +77,7 @@ export class InkDrop {
         }
 
         let t = elapsedTime / this.transitionDuration;
-        t = easeInOutSine(t)
+        t = easeOutCirc(t)
         this.inkPoints.forEach(p => p.animate(t))
     }
 
@@ -190,7 +190,7 @@ export class InkDrop {
         const maxThickness = repeatCount * repeatDistanceInterval
         this.inkPoints.forEach(ip => {
             p.beginShape()
-            for (let index = repeatCount; index > 0; index--) {
+            for (let index = repeatCount / 2; index > 0; index--) {
 
                 const d = index * repeatDistanceInterval
 

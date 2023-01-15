@@ -128,24 +128,25 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, mode: Mode): void {
+
+    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, mode: Mode, deactivateDistance: number): void {
         if (!this.active)
             return
 
         switch (mode) {
             case 'outline':
-                this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+                this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance)
                 break;
             case 'history':
-                this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+                this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance)
                 break;
             case 'history-spiral':
-                this.drawPlotHistorySpiral(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth)
+                this.drawPlotHistorySpiral(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance)
                 break;
         }
     }
 
-    drawPlotOutline(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
+    drawPlotOutline(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number) {
         p.push()
         p.noFill()
 
@@ -155,7 +156,7 @@ export class InkDrop {
 
         const maxThickness = repeatCount * repeatDistanceInterval
 
-        for (let index = repeatCount; index > 0; index--) {
+        for (let index = repeatCount / 2; index > 0; index--) {
 
             const d = index * repeatDistanceInterval
 
@@ -178,7 +179,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlotHistory(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
+    drawPlotHistory(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number) {
 
         p.push()
         p.noFill()
@@ -190,12 +191,15 @@ export class InkDrop {
         const maxThickness = repeatCount * repeatDistanceInterval
         this.inkPoints.forEach(ip => {
             p.beginShape()
-            for (let index = repeatCount / 2; index > 0; index--) {
+            for (let index = repeatCount; index > repeatCount / 2; index--) {
 
                 const d = index * repeatDistanceInterval
 
                 if ((maxThickness - d) > repeatThickness)
                     break
+
+                if (d > deactivateDistance)
+                    continue
 
                 const vertex = ip.getVertexAtDistance(d)
 
@@ -212,7 +216,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlotHistorySpiral(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number) {
+    drawPlotHistorySpiral(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number) {
         p.push()
         p.noFill()
         const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))
@@ -222,7 +226,7 @@ export class InkDrop {
         for (let ipIndex = 0; ipIndex < this.inkPoints.length; ipIndex++) {
             p.beginShape()
             let offset = 0
-            for (let index = repeatCount; index > 0; index--) {
+            for (let index = repeatCount / 2; index > 0; index--) {
 
                 const d = index * repeatDistanceInterval
 

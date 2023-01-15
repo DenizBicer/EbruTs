@@ -23,6 +23,7 @@ export const inkDropPlotSketch = (p) => {
 
 
     let gui
+    let dropsFolder
     let svgG
 
     let loopActivate = false
@@ -39,6 +40,7 @@ export const inkDropPlotSketch = (p) => {
         useFlatPen: false,
         penWidth: 11, // 2mm 
         mode: 'history',
+        deactivateDistance: 200,
     }
 
     p.setup = () => {
@@ -67,6 +69,8 @@ export const inkDropPlotSketch = (p) => {
         gui.add(settings, 'useFlatPen')
         gui.add(settings, 'penWidth')
         gui.add(settings, 'mode', { outline: 'outline', history: 'history', historySpiral: 'history-spiral' })
+        gui.add(settings, 'deactivateDistance')
+        dropsFolder = gui.addFolder('drops')
         gui.close()
 
         currentColor = p.color(0)
@@ -150,7 +154,7 @@ export const inkDropPlotSketch = (p) => {
         const newDrop = new InkDrop(dropPoint, p.color(currentColor), { radius }, true)
         newDrop.active = active
         drops.push(newDrop)
-        gui.add(newDrop, 'active')
+        dropsFolder.add(newDrop, 'active')
     }
 
 
@@ -187,7 +191,7 @@ export const inkDropPlotSketch = (p) => {
         renderer.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth, settings.mode)
+            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth, settings.mode, settings.deactivateDistance)
         });
 
         // p.save('drop.svg')

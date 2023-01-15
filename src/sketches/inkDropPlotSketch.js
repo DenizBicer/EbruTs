@@ -36,7 +36,7 @@ export const inkDropPlotSketch = (p) => {
         lineThickness: 1,
         lineOpacity: 140,
         repeatDistanceInterval: 4,
-        repeatThickness: 150,
+        repeatThickness: 100,
         useFlatPen: false,
         penWidth: 11, // 2mm 
         mode: 'history',
@@ -100,7 +100,7 @@ export const inkDropPlotSketch = (p) => {
     }
 
     function onAdd() {
-        const r = p.random(150);
+        const r = p.random(200);
         const theta = p.random(Math.PI * 2);
         const vector = angleToDir(theta)
         const position = p5.Vector.add(p.createVector(p.width / 2, p.height / 2), p5.Vector.mult(vector, r))

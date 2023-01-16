@@ -33,14 +33,15 @@ export const inkDropPlotSketch = (p) => {
 
 
     const settings = {
-        lineThickness: 1,
-        lineOpacity: 140,
+        lineThickness: 2,
+        lineOpacity: 60,
         repeatDistanceInterval: 4,
         repeatThickness: 100,
         useFlatPen: false,
         penWidth: 11, // 2mm 
         mode: 'history',
         deactivateDistance: 200,
+        noiseFactor: 2
     }
 
     p.setup = () => {
@@ -70,6 +71,7 @@ export const inkDropPlotSketch = (p) => {
         gui.add(settings, 'penWidth')
         gui.add(settings, 'mode', { outline: 'outline', history: 'history', historySpiral: 'history-spiral' })
         gui.add(settings, 'deactivateDistance')
+        gui.add(settings, 'noiseFactor')
         dropsFolder = gui.addFolder('drops')
         gui.close()
 
@@ -107,8 +109,14 @@ export const inkDropPlotSketch = (p) => {
 
         const radius = p.random(100) + 50
 
+        if (drops.length === 5) {
+            drops.splice(0, 1)
+        }
+
         // drop(position.x, position.y, currentColor, radius, drops.length === 0)
         drop(position.x, position.y, currentColor, radius, true)
+
+
     }
 
     function onToggleLoopActivate() {
@@ -191,7 +199,9 @@ export const inkDropPlotSketch = (p) => {
         renderer.strokeWeight(settings.lineThickness)
 
         drops.forEach(drop => {
-            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness, settings.useFlatPen, settings.penWidth, settings.mode, settings.deactivateDistance)
+            drop.drawPlot(renderer, settings.repeatDistanceInterval, settings.repeatThickness,
+                settings.useFlatPen, settings.penWidth, settings.mode, settings.deactivateDistance,
+                settings.noiseFactor)
         });
 
         // p.save('drop.svg')

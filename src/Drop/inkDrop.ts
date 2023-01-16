@@ -1,6 +1,7 @@
 import p5 from "p5"
-import { angleToDir, easeInOutSine, easeOutCirc } from "../shared/helper"
+import { angleToDir, easeOutCirc } from "../shared/helper"
 import { inkPoint, tineLineArgs, wavyPatternArgs } from "./inkPoint"
+
 
 type circleDrop = {
     radius: number
@@ -17,7 +18,7 @@ export class InkDrop {
     center: p5.Vector
     radius: number
     inkPoints: inkPoint[] = []
-    vertexCount: number = 300
+    vertexCount: number = 250
     color: p5.Color
     fill: boolean = true
     debug: boolean = false
@@ -129,24 +130,24 @@ export class InkDrop {
     }
 
 
-    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, mode: Mode, deactivateDistance: number): void {
+    drawPlot(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, mode: Mode, deactivateDistance: number, noiseFactor: number): void {
         if (!this.active)
             return
 
         switch (mode) {
             case 'outline':
-                this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance)
+                this.drawPlotOutline(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance, noiseFactor)
                 break;
             case 'history':
-                this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance)
+                this.drawPlotHistory(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance, noiseFactor)
                 break;
             case 'history-spiral':
-                this.drawPlotHistorySpiral(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance)
+                this.drawPlotHistorySpiral(p, repeatDistanceInterval, repeatThickness, useFlatPen, penWidth, deactivateDistance, noiseFactor)
                 break;
         }
     }
 
-    drawPlotOutline(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number) {
+    drawPlotOutline(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number, noiseFactor: number): void {
         p.push()
         p.noFill()
 
@@ -179,7 +180,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlotHistory(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number) {
+    drawPlotHistory(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number, noiseFactor: number): void {
 
         p.push()
         p.noFill()
@@ -201,7 +202,19 @@ export class InkDrop {
                 if (d > deactivateDistance)
                     continue
 
-                const vertex = ip.getVertexAtDistance(d)
+                let vertex = ip.getVertexAtDistance(d)
+                const noise = (p.noise(vertex.x, vertex.y) - 0.5) * 2 * noiseFactor
+                const displacement = 30 * noise
+                const distanceToCenter = p5.Vector.dist(vertex, this.center)
+                const direction = p5.Vector.sub(vertex, this.center).normalize()
+                vertex = p5.Vector.add(this.center, direction.mult(distanceToCenter + displacement))
+                // const angle = angleFromDir(direction)
+                // const dFactor = d / deactivateDistance
+                // const noisyAngle = angle + noise * noiseFactor * dFactor
+
+
+                // vertex = p5.Vector.add(this.center, angleToDir(noisyAngle).mult(distanceToCenter))
+
 
                 if (useFlatPen) {
                     p.rect(vertex.x, vertex.y, penWidth, 0.5)
@@ -216,7 +229,7 @@ export class InkDrop {
         p.pop()
     }
 
-    drawPlotHistorySpiral(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number) {
+    drawPlotHistorySpiral(p: p5 | any, repeatDistanceInterval: number, repeatThickness: number, useFlatPen: boolean, penWidth: number, deactivateDistance: number, noiseFactor: number): void {
         p.push()
         p.noFill()
         const maxDistance = this.inkPoints.map(p => p.getLength()).reduce((p, c) => Math.max(p, c))

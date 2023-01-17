@@ -203,7 +203,8 @@ export class InkDrop {
                     continue
 
                 let vertex = ip.getVertexAtDistance(d)
-                const noise = (p.noise(vertex.x, vertex.y) - 0.5) * 2 * noiseFactor
+                const noiseZoom = 0.004
+                const noise = (p.noise(vertex.x * noiseZoom, vertex.y * noiseZoom) - 0.5) * 2 * noiseFactor
                 const displacement = 30 * noise
                 const distanceToCenter = p5.Vector.dist(vertex, this.center)
                 const direction = p5.Vector.sub(vertex, this.center).normalize()

@@ -240,7 +240,7 @@ export class InkDrop {
         for (let ipIndex = 0; ipIndex < this.inkPoints.length; ipIndex++) {
             p.beginShape()
             let offset = 0
-            for (let index = repeatCount / 2; index > 0; index--) {
+            for (let index = repeatCount; index > repeatCount / 2; index--) {
 
                 const d = index * repeatDistanceInterval
 

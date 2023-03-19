@@ -24,6 +24,7 @@
 }
 
 .postcard {
-    width: 840px;
-    height: 596px;
+    width: 1480px;
+    height: 1050px;
+    /* 1px is 10 mm*/ 
 }

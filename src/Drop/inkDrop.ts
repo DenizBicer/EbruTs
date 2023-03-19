@@ -157,7 +157,7 @@ export class InkDrop {
 
         const maxThickness = repeatCount * repeatDistanceInterval
 
-        for (let index = repeatCount / 2; index > 0; index--) {
+        for (let index = repeatCount; index > 0; index--) {
 
             const d = index * repeatDistanceInterval
 

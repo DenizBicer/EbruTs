@@ -33,14 +33,14 @@ export const inkDropPlotSketch = (p) => {
 
 
     const settings = {
-        lineThickness: 20,
-        lineOpacity: 15,
-        repeatDistanceInterval: 4,
-        repeatThickness: 100,
+        lineThickness: 10,
+        lineOpacity: 200,
+        repeatDistanceInterval: 10,
+        repeatThickness: 1000,
         useFlatPen: false,
         penWidth: 11, // 2mm 
-        mode: 'history',
-        deactivateDistance: 200,
+        mode: 'outline',
+        deactivateDistance: 1000,
         noiseFactor: 2
     }
 
@@ -109,12 +109,8 @@ export const inkDropPlotSketch = (p) => {
 
         const radius = p.random(100) + 50
 
-        if (drops.length === 5) {
-            drops.splice(0, 1)
-        }
-
-        // drop(position.x, position.y, currentColor, radius, drops.length === 0)
-        drop(position.x, position.y, currentColor, radius, true)
+        drop(position.x, position.y, currentColor, radius, drops.length === 0)
+        //drop(position.x, position.y, currentColor, radius, true)
 
 
     }
